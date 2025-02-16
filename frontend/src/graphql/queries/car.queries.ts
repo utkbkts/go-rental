@@ -31,3 +31,35 @@ export const GET_ALL_QUERIES = gql`
     }
   }
 `;
+
+export const GET_CAR_BY_ID = gql`
+  query Query($carId: ID!) {
+    getCarById(carId: $carId) {
+      id
+      name
+      description
+      updatedAt
+      createdAt
+      status
+      rentPerDay
+      address
+      year
+      power
+      category
+      doors
+      seats
+      fuelType
+      transmission
+      brand
+      milleage
+      images {
+        url
+        public_id
+      }
+      ratings {
+        value
+        count
+      }
+    }
+  }
+`;
