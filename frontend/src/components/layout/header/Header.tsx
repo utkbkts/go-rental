@@ -24,7 +24,7 @@ const Header = () => {
           </span>
         </h1>
         <div className="hidden md:flex items-center gap-4">
-          <Button className="cursor-pointer hover:bg-blue-500 hover:text-white transition duration-300">
+          <Button className="cursor-pointer hover:bg-blue-500 hover:text-white transition duration-300 m">
             Login
           </Button>
           <div className="relative">
@@ -32,7 +32,7 @@ const Header = () => {
             {/* Dropdown Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Avatar className="cursor-pointer">
+                <Avatar className="cursor-pointer my-1">
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>

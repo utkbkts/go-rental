@@ -3,7 +3,7 @@ import SelectInput from "../input/SelectInput";
 import {
   createSearchSchema,
   searchMenuSchema,
-} from "@/validation/searchMenu/SearchMenuSchema";
+} from "@/validation/searchMenu/searchMenuSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "../ui/button";
@@ -32,10 +32,10 @@ const SearchMenu = () => {
   };
 
   return (
-    <div className="bg-white shadow-xl rounded-md w-[500px] absolute -bottom-24 left-1/3">
+    <div className="bg-white shadow-xl rounded-md md:w-[500px] w-full absolute top-0 left-1/2 -translate-y-1/2 -translate-x-1/2">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-          <div className="grid grid-cols-4 gap-4 py-2 px-4">
+          <div className="grid md:grid-cols-4 grid-cols-3 gap-4 py-2 px-4">
             <SelectInput
               control={form.control}
               label="Year"
@@ -94,7 +94,9 @@ const SearchMenu = () => {
             />
           </div>
           <div className="w-full px-4 py-2">
-            <Button type="submit" className="w-full cursor-pointer">Search</Button>
+            <Button type="submit" className="w-full cursor-pointer">
+              Search
+            </Button>
           </div>
         </form>
       </Form>

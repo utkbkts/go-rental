@@ -30,7 +30,7 @@ export interface ICar {
   year: number;
   transmission: string;
   doors: number;
-  fuelType:string;
+  fuelType: string;
   milleage: number;
   seats: number;
   power: number;
