@@ -10,9 +10,10 @@ import { CarFront, Dot } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { ICar } from "shared";
+import StarRatings from "react-star-ratings";
 
-interface ICarProps{
-  cars:ICar
+interface ICarProps {
+  cars: ICar;
 }
 
 const FeaturesCards = ({ cars }: ICarProps) => {
@@ -60,10 +61,18 @@ const FeaturesCards = ({ cars }: ICarProps) => {
             </Badge>
           </div>
         </CardHeader>
-        <CardContent className="flex items-center">
-          {ratings?.value}
+        <CardContent className="flex items-center mb-4">
+          <StarRatings
+            rating={ratings?.value}
+            starRatedColor={"orange"}
+            numberOfStars={5}
+            name="rating"
+            starDimension={"22px"}
+            starSpacing={"1px"}
+          />
+          <span className="pt-1">{ratings?.value}</span>
           <Dot />{" "}
-          <span className="font-bold underline">{ratings?.count} Reviews</span>
+          <span className="font-bold underline pt-1">{ratings?.count} Reviews</span>
         </CardContent>
         <CardFooter className="flex justify-between">
           <div>

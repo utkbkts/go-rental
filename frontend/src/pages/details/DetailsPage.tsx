@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { ICar } from "shared";
 import moment from "moment";
+import StarRatings from "react-star-ratings";
 
 const DetailsPage = () => {
   const params = useParams();
@@ -48,7 +49,19 @@ const DetailsPage = () => {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Section - Car Images and Details */}
         <div className="w-full lg:w-3/4">
-          <h2 className="text-xl font-semibold text-gray-400">{moment(Number(createdAt)).format("ll")}</h2>
+         <div className="flex items-center gap-4">
+         <StarRatings
+            rating={ratings?.value}
+            starRatedColor={"orange"}
+            numberOfStars={5}
+            name="rating"
+            starDimension={"22px"}
+            starSpacing={"1px"}
+          />
+          <h2 className="text-xl font-semibold text-gray-400 pt-[3px]">
+            {moment(Number(createdAt)).format("ll")}
+          </h2>
+         </div>
           {/* Main Image */}
           <div className="bg-gray-100 p-4 rounded-lg shadow-lg">
             <img
