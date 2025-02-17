@@ -38,6 +38,17 @@ class APIFilters {
     this.model = this.model.find({ ...searchQuery });
     return this;
   }
+
+  filters(filters: any) {
+    let filterStr = JSON.stringify(filters);
+    
+    filterStr = filterStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
+    
+  
+    this.model = this.model.find(JSON.parse(filterStr));
+    return this;
+  }
+  
 }
 
 export default APIFilters;

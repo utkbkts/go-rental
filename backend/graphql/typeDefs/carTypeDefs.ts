@@ -1,5 +1,4 @@
 import { gql } from "graphql-tag";
-
 export const carTypeDefs = gql`
   type CarImages {
     url: String
@@ -51,8 +50,23 @@ export const carTypeDefs = gql`
     category: String!
   }
 
+  input RentPerDayFilter {
+  gt: Int
+  gte: Int
+  lt: Int
+  lte: Int
+}
+
+  input CarFilters{
+  category: String
+  brand: String
+  transmission: String
+  status: String
+  rentPerDay:RentPerDayFilter
+  }
+
   type Query {
-    getAllCars(query:String): [Car]
+    getAllCars(query: String, filters: CarFilters): [Car]
     getCarById(carId: ID!): Car
   }
 
