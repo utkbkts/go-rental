@@ -1,8 +1,10 @@
 import Car from "../models/car.model";
 import { CarInput } from "../types/car.types";
+import APIFilters from "../utils/apiFilters";
 
-export const getAllCars = async () => {
-  const car = await Car.find();
+export const getAllCars = async (query:string) => {
+  const searchQuery = new APIFilters(Car).search(query);
+  const car = await searchQuery.model;
   return car;
 };
 

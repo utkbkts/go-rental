@@ -9,7 +9,7 @@ import { CarInput } from "../../types/car.types";
 
 export const carResolvers = {
   Query: {
-    getAllCars: async (parent: any) => await getAllCars(),
+    getAllCars: async (_:any,{query}:{query:string}) => await getAllCars(query),
     getCarById: async (_: any, { carId }: { carId: string }) =>
       await getCarById(carId),
   },
