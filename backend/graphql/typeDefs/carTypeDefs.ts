@@ -51,22 +51,32 @@ export const carTypeDefs = gql`
   }
 
   input RentPerDayFilter {
-  gt: Int
-  gte: Int
-  lt: Int
-  lte: Int
-}
+    gt: Int
+    gte: Int
+    lt: Int
+    lte: Int
+  }
 
-  input CarFilters{
-  category: String
-  brand: String
-  transmission: String
-  status: String
-  rentPerDay:RentPerDayFilter
+  input CarFilters {
+    category: String
+    brand: String
+    transmission: String
+    status: String
+    rentPerDay: RentPerDayFilter
+  }
+
+  type Pagination {
+    totalCount: Int
+    resPerPage: Int
+  }
+
+  type PaginatedCars {
+    car: [Car]
+    pagination: Pagination
   }
 
   type Query {
-    getAllCars(query: String, filters: CarFilters): [Car]
+    getAllCars(page: Int, filters: CarFilters, query: String): PaginatedCars
     getCarById(carId: ID!): Car
   }
 
