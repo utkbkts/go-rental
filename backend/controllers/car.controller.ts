@@ -5,14 +5,12 @@ import APIFilters from "../utils/apiFilters";
 export const getAllCars = async (page:number,filters:CarFilters,query:string) => {
   const resPerPage = 3;
   const searchQuery = new APIFilters(Car).search(query).filters(filters);
-
   let car = await searchQuery.model;
 
   const totalCount = car.length;
 
   searchQuery.pagination(page,resPerPage)
   car = await searchQuery.model.clone()
-
   return {car,pagination:{totalCount,resPerPage}};
 };
 

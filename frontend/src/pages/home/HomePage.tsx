@@ -7,14 +7,21 @@ import Title from "@/shared/Title";
 import { GET_ALL_QUERIES } from "@/graphql/queries/car.queries";
 import { ICar } from "shared";
 import Loading from "@/components/Loading";
+import Sidebar from "./partials/Sidebar";
+import { useSearchParams } from "react-router-dom";
 
 const HomePage = () => {
-  const { data,loading } = useQuery(GET_ALL_QUERIES);
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("query");
 
+  const variables = {
+    query,
+  };
 
+  const { data, loading } = useQuery(GET_ALL_QUERIES, { variables });
 
   if (loading) {
-    return <Loading fullScreen={true} size={60}/>;
+    return <Loading fullScreen={true} size={60} />;
   }
 
   return (
@@ -30,10 +37,15 @@ const HomePage = () => {
       {/* SECTION CARD */}
       <div className="container mx-auto min-h-screen ">
         <Title title="Car's" />
-        <div className="grid xl:grid-cols-2 grid-cols-1 gap-4">
-          {data?.getAllCars?.map((cars: ICar) => (
-            <FeaturesCards cars={cars} key={cars?.id} />
-          ))}
+        <div className="flex gap-4">
+          <div className="w-1/4">
+            <Sidebar />
+          </div>
+          <div className="grid xl:grid-cols-2 grid-cols-1 gap-4">
+            {data?.getAllCars?.car?.map((cars: ICar) => (
+              <FeaturesCards cars={cars} key={cars?.id} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
