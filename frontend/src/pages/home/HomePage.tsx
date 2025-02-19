@@ -13,8 +13,19 @@ import { useSearchParams } from "react-router-dom";
 const HomePage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
+  const category = searchParams.get("category");
+  const brand = searchParams.get("brand");
+  const transmission = searchParams.get("transmission");
+
+  const filters = {
+    status: "Active",
+    ...(category && { category }),
+    ...(brand && { brand }),
+    ...(transmission && { transmission }),
+  };
 
   const variables = {
+    filters,
     query,
   };
 

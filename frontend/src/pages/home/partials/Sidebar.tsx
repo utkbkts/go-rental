@@ -1,27 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { updateSearchParams } from "@/helpers/helpers";
+import {
+  CarBrand,
+  CarCategories,
+  CarTransmissions,
+} from "../../../../../shared/src/interfaces";
 
 const Sidebar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   let [searchParams] = useSearchParams();
+  const [filters, setFilters] = useState({
+    category: searchParams.get("category"),
+    brand: searchParams.get("brand"),
+    transmission: searchParams.get("transmission"),
+  });
   const navigate = useNavigate();
-  const carCategories = ["Sedan", "SUV", "Coupe", "Convertible"];
-  const carBrands = ["Toyota", "Honda", "Ford", "Chevrolet"];
-  const carTransmissions = ["Automatic", "Manual"];
 
+  //filters
+  const handleCheckBoxChange = (type: string, value: string) => {
+    setFilters((prevState: any) => ({
+      ...prevState,
+      [type]: prevState[type] === value ? null : value,
+    }));
+  };
+
+  useEffect(() => {
+    const updatedSearchParams = new URLSearchParams(searchParams);
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        updatedSearchParams.set(key, value);
+      } else {
+        updatedSearchParams.delete(key);
+      }
+    });
+
+    const newPathname = `${
+      window.location.pathname
+    }?${updatedSearchParams.toString()}`;
+    navigate(newPathname);
+  }, [filters, navigate, searchParams]);
+
+  //search
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    searchParams = updateSearchParams(searchParams, "query", searchQuery);
+    const search = searchParams.get("query");
+
+    if (searchQuery.trim()) {
+      if (search) {
+        searchParams = updateSearchParams(searchParams, "query", searchQuery);
+      } else {
+        searchParams.set("query", searchQuery);
+      }
+    } else {
+      searchParams.delete("query");
+    }
 
     const pathname = `${window.location.pathname}?${searchParams.toString()}`;
+
     navigate(pathname);
   };
+
   return (
     <div>
       <Card>
@@ -46,12 +90,20 @@ const Sidebar = () => {
 
               <div className="filter-section my-8">
                 <h2 className="text-xl font-bold mt-4 my-3">Car Type</h2>
-                {carCategories?.map((category) => (
+                {CarCategories?.map((category) => (
                   <div
                     key={category}
                     className="flex items-center space-x-2 my-2"
                   >
-                    <Checkbox id="category" name="category" value={category} />
+                    <Checkbox
+                      onCheckedChange={() =>
+                        handleCheckBoxChange("category", category)
+                      }
+                      id="category"
+                      checked={filters.category === category}
+                      name="category"
+                      value={category}
+                    />
                     <label
                       htmlFor="carType"
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -64,9 +116,17 @@ const Sidebar = () => {
 
               <div className="filter-section my-8">
                 <h2 className="text-xl font-bold mt-4 my-3">Select Brand</h2>
-                {carBrands?.map((brand) => (
+                {CarBrand?.map((brand) => (
                   <div key={brand} className="flex items-center space-x-2 my-2">
-                    <Checkbox id="brand" name="brand" value={brand} />
+                    <Checkbox
+                      onCheckedChange={() =>
+                        handleCheckBoxChange("brand", brand)
+                      }
+                      checked={filters.brand === brand}
+                      id="brand"
+                      name="brand"
+                      value={brand}
+                    />
                     <label
                       htmlFor="carBrand"
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -79,7 +139,7 @@ const Sidebar = () => {
 
               <div className="filter-section my-8">
                 <h2 className="text-xl font-bold mt-4 my-3">Transmission</h2>
-                {carTransmissions?.map((transmission) => (
+                {CarTransmissions?.map((transmission) => (
                   <div
                     key={transmission}
                     className="flex items-center space-x-2 my-2"
@@ -88,6 +148,10 @@ const Sidebar = () => {
                       id="transmission"
                       name="transmission"
                       value={transmission}
+                      onCheckedChange={() =>
+                        handleCheckBoxChange("transmission", transmission)
+                      }
+                      checked={filters.transmission === transmission}
                     />
                     <label
                       htmlFor="carTransmission"
