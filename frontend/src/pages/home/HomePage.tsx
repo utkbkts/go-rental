@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import SearchMenu from "@/components/search/SearchMenu";
+import SearchMenu from "@/components/custom/Search";
 import Slider from "./partials/Slider";
 import SectionRepair from "./partials/SectionRepair";
 import FeaturesCards from "@/components/cards/FeaturesCards";
@@ -9,6 +9,7 @@ import { ICar } from "shared";
 import Loading from "@/components/Loading";
 import Sidebar from "./partials/Sidebar";
 import { useSearchParams } from "react-router-dom";
+import Pagination from "@/components/custom/Pagination";
 
 const HomePage = () => {
   const [searchParams] = useSearchParams();
@@ -16,6 +17,7 @@ const HomePage = () => {
   const category = searchParams.get("category");
   const brand = searchParams.get("brand");
   const transmission = searchParams.get("transmission");
+  const page = parseInt(searchParams.get("page") || "1", 10);
 
   const filters = {
     status: "Active",
@@ -25,6 +27,7 @@ const HomePage = () => {
   };
 
   const variables = {
+    page,
     filters,
     query,
   };
@@ -58,6 +61,13 @@ const HomePage = () => {
             ))}
           </div>
         </div>
+        {data?.getAllCars?.pagination?.totalCount >
+          data?.getAllCars?.pagination?.resPerPage && (
+          <Pagination
+            totalCount={data?.getAllCars?.pagination?.totalCount}
+            resPerPage={data?.getAllCars?.pagination?.resPerPage}
+          />
+        )}
       </div>
     </div>
   );

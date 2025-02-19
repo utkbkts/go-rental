@@ -3,7 +3,7 @@ import { CarInput ,CarFilters} from "../types/car.types";
 import APIFilters from "../utils/apiFilters";
 
 export const getAllCars = async (page:number,filters:CarFilters,query:string) => {
-  const resPerPage = 3;
+  const resPerPage = 4;
   const searchQuery = new APIFilters(Car).search(query).filters(filters);
   let car = await searchQuery.model;
 
