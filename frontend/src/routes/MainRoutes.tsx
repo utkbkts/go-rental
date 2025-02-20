@@ -1,5 +1,5 @@
-import Loading from "@/components/Loading";
-import NotFound from "@/components/NotFound";
+import Loading from "@/components/custom/Loading";
+import NotFound from "@/components/custom/NotFound";
 import MainLayout from "@/layouts/MainLayout";
 import React, { Suspense } from "react";
 

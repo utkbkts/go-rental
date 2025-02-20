@@ -6,7 +6,7 @@ import FeaturesCards from "@/components/cards/FeaturesCards";
 import Title from "@/shared/Title";
 import { GET_ALL_QUERIES } from "@/graphql/queries/car.queries";
 import { ICar } from "shared";
-import Loading from "@/components/Loading";
+import Loading from "@/components/custom/Loading";
 import Sidebar from "./partials/Sidebar";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "@/components/custom/Pagination";
@@ -34,20 +34,18 @@ const HomePage = () => {
     query,
   };
 
-  const { data, loading ,error} = useQuery(GET_ALL_QUERIES, { variables });
+  const { data, loading, error } = useQuery(GET_ALL_QUERIES, { variables });
 
-  useEffect(()=>{
-    if(error){
-       toastNotification(error)
+  useEffect(() => {
+    if (error) {
+      toastNotification(error);
     }
-  },[error])
-
+  }, [error]);
 
   if (loading) {
     return <Loading fullScreen={true} size={60} />;
   }
 
- 
   return (
     <div className="w-full select-none">
       {/* HERO */}
