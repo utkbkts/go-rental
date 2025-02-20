@@ -6,10 +6,11 @@ import { useParams } from "react-router-dom";
 import { ICar } from "shared";
 import moment from "moment";
 import StarRatings from "react-star-ratings";
+import NotFound from "@/components/NotFound";
 
 const DetailsPage = () => {
   const params = useParams();
-  const { data, loading } = useQuery(GET_CAR_BY_ID, {
+  const { data, loading,error } = useQuery(GET_CAR_BY_ID, {
     variables: {
       carId: params?.id,
     },
@@ -43,6 +44,10 @@ const DetailsPage = () => {
     transmission,
     year,
   } = car;
+
+  if(error?.graphQLErrors[0]?.extensions?.code === "NOT_FOUND"){
+    return <NotFound/>
+  }
 
   return (
     <div className="container mx-auto mt-12 max-w-6xl px-4">

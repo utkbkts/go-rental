@@ -1,3 +1,5 @@
+import { toast } from "@/hooks/use-toast";
+
 export const updateSearchParams = (
   searchParams: URLSearchParams,
   key: string,
@@ -10,4 +12,13 @@ export const updateSearchParams = (
   }
 
   return searchParams;
+};
+
+export const toastNotification = (err: any) => {
+  const errMessage = err?.cause?.result?.errors[0]?.message || err?.message;
+  toast({
+    variant: "destructive",
+    title: "Something went wrong !!",
+    description: errMessage,
+  });
 };

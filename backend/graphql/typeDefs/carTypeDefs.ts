@@ -11,43 +11,43 @@ export const carTypeDefs = gql`
   }
 
   type Car {
-    id: ID!
-    name: String!
-    description: String!
-    status: String!
-    rentPerDay: Float!
-    address: String!
-    year: Int!
+    id: ID
+    name: String
+    description: String
+    status: String
+    rentPerDay: Float
+    address: String
+    year: Int
     power: Int
-    milleage: Int!
-    brand: String!
-    transmission: String!
-    fuelType: String!
-    seats: Int!
-    doors: Int!
+    milleage: Int
+    brand: String
+    transmission: String
+    fuelType: String
+    seats: Int
+    doors: Int
     images: [CarImages]
-    category: String!
+    category: String
     ratings: CarRatings
     createdAt: String
     updatedAt: String
   }
 
   input CarInput {
-    name: String!
-    description: String!
-    status: String!
-    rentPerDay: Float!
-    address: String!
-    images: [String!]
-    year: Int!
+    name: String
+    description: String
+    status: String
+    rentPerDay: Float
+    address: String
+    images: [String]
+    year: Int
     power: Int
-    milleage: Int!
-    brand: String!
-    transmission: String!
-    fuelType: String!
-    seats: Int!
-    doors: Int!
-    category: String!
+    milleage: Int
+    brand: String
+    transmission: String
+    fuelType: String
+    seats: Int
+    doors: Int
+    category: String
   }
 
   input RentPerDayFilter {
@@ -77,12 +77,12 @@ export const carTypeDefs = gql`
 
   type Query {
     getAllCars(page: Int, filters: CarFilters, query: String): PaginatedCars
-    getCarById(carId: ID!): Car
+    getCarById(carId: ID): Car
   }
 
   type Mutation {
-    createCar(carInput: CarInput!): Car
-    updateCar(carId: ID!, carInput: CarInput!): Boolean
-    deleteCar(carId: ID!): Boolean
+    createCar(carInput: CarInput): Car
+    updateCar(carId: ID, carInput: CarInput): Boolean
+    deleteCar(carId: ID): Boolean
   }
 `;

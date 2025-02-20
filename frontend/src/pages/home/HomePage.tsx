@@ -10,6 +10,8 @@ import Loading from "@/components/Loading";
 import Sidebar from "./partials/Sidebar";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "@/components/custom/Pagination";
+import { useEffect } from "react";
+import { toastNotification } from "@/helpers/helpers";
 
 const HomePage = () => {
   const [searchParams] = useSearchParams();
@@ -32,12 +34,20 @@ const HomePage = () => {
     query,
   };
 
-  const { data, loading } = useQuery(GET_ALL_QUERIES, { variables });
+  const { data, loading ,error} = useQuery(GET_ALL_QUERIES, { variables });
+
+  useEffect(()=>{
+    if(error){
+       toastNotification(error)
+    }
+  },[error])
+
 
   if (loading) {
     return <Loading fullScreen={true} size={60} />;
   }
 
+ 
   return (
     <div className="w-full select-none">
       {/* HERO */}
