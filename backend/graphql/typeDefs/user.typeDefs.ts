@@ -10,6 +10,7 @@ export const userTypeDefs = gql`
     id: ID!
     name: String!
     email: String!
+    password: String!
     phoneNo: String!
     avatar: Avatar
     role: [String]
@@ -30,5 +31,6 @@ export const userTypeDefs = gql`
 
   type Mutation {
     registerUser(userInput: UserInput!): User
+    login(email: String!, password: String!): User
   }
 `;

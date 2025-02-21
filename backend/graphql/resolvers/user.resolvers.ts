@@ -1,4 +1,5 @@
-import { registerUser } from "../../controllers/user.controllers";
+import { Response } from "express";
+import { login, registerUser } from "../../controllers/user.controllers";
 import { UserInput } from "../../types/user.types";
 
 export const userResolvers = {
@@ -10,6 +11,14 @@ export const userResolvers = {
   Mutation: {
     registerUser: async (_: any, { userInput }: { userInput: UserInput }) => {
       return registerUser(userInput);
+    },
+
+    login: async (
+      _: any,
+      { email, password }: { email: string; password: string },
+      { res }: { res: Response }
+    ) => {
+      return login(email, password, res);
     },
   },
 };

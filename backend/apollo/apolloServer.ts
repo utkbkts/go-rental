@@ -2,7 +2,7 @@ import cors from "cors";
 import { ApolloServer } from "@apollo/server";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { expressMiddleware } from "@apollo/server/express4";
-import { Application, json } from "express";
+import { Application, json, Request, Response } from "express";
 import { carTypeDefs } from "../graphql/typeDefs/car.typeDefs";
 import { carResolvers } from "../graphql/resolvers/car.resolvers";
 import { userTypeDefs } from "../graphql/typeDefs/user.typeDefs";
@@ -28,6 +28,10 @@ export async function startApolloServer(app: Application) {
       credentials: true,
     }),
     json(),
-    expressMiddleware(apolloServer) as any
+    expressMiddleware(apolloServer, {
+      context: async ({ req, res }: { req: Request; res: Response }) => {
+        return { req, res };
+      },
+    })
   );
 }
