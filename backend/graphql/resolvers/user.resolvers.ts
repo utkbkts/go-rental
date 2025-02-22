@@ -4,8 +4,8 @@ import { UserInput } from "../../types/user.types";
 
 export const userResolvers = {
   Query: {
-    me: async (_: any) => {
-      return "current user";
+    me: async (_: any,__:any,{user}:{user:any}) => {
+      return user;
     },
   },
   Mutation: {
