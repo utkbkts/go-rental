@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
 import Car from "../models/car.model";
 import { cars } from "./data";
+import * as dotenv from "dotenv";
+dotenv.config();
+
 
 const Seeder = async () => {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/go-rental");
+    await mongoose.connect(process.env.MONGO_URI!);
 
     await Car.deleteMany({});
     console.log("Cars deleted");

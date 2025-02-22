@@ -20,7 +20,8 @@ import {
 } from "@/graphql/mutations/user.mutations";
 import { toastNotification } from "@/helpers/helpers";
 import { toast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import { CURRENT_USER } from "@/graphql/queries/user.queries";
+import { isAuthenticatedVar } from "@/apollo/apolloVars";
 
 interface AuthProps {
   toggleAuth: () => void;
@@ -79,15 +80,23 @@ const AuthModal = () => {
 };
 
 function Login({ toggleAuth }: AuthProps) {
-  const navigate = useNavigate()
-  const [loginUser, { loading, error }] = useMutation(LOGIN_USER_MUTATION, {
+  const [LoginUser, { loading, error }] = useMutation(LOGIN_USER_MUTATION, {
+    update(cache, { data }) {
+      if (data.login) {
+        isAuthenticatedVar(true);
+        cache.writeQuery({
+          query: CURRENT_USER, 
+          data: { me: data.login },
+        });
+      }
+    },
     onCompleted: () => {
       toast({
         title: "You have successfully logged in.",
         description: "You can browse the site now.",
         variant:"success"
       });
-      navigate("/");
+      // navigate("/");
     },
   });
 
@@ -107,7 +116,7 @@ function Login({ toggleAuth }: AuthProps) {
   });
 
   const onSubmit = async (data: createLoginData) => {
-    await loginUser({
+    await LoginUser({
       variables: {
         email: data.email,
         password: data.password,

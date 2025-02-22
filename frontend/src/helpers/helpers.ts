@@ -22,3 +22,11 @@ export const toastNotification = (err: any) => {
     description: errMessage,
   });
 };
+
+export const getUserName = (fullName: any) => {
+  const nameSplice = fullName
+    ?.split(" ")
+    .map((item: string) => item.charAt(0))
+    .join("");
+  return nameSplice;
+};

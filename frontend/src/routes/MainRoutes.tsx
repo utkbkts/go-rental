@@ -2,6 +2,7 @@ import Loading from "@/components/custom/Loading";
 import NotFound from "@/components/custom/NotFound";
 import MainLayout from "@/layouts/MainLayout";
 import React, { Suspense } from "react";
+import ProtectedRoute from "./ProtectedRoute";
 
 const HomePage = React.lazy(() => import("@/pages/home/HomePage"));
 const DetailsPage = React.lazy(() => import("@/pages/details/DetailsPage"));
@@ -28,10 +29,12 @@ export const MainRoutes = {
       ),
     },
     {
-      path: "/login",
+      path: "/auth",
       element: (
         <Suspense fallback={<Loading />}>
+          <ProtectedRoute>
           <LoginPage />
+          </ProtectedRoute>
         </Suspense>
       ),
     },

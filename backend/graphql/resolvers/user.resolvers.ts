@@ -1,11 +1,18 @@
 import { Response } from "express";
 import { login, registerUser } from "../../controllers/user.controllers";
 import { UserInput } from "../../types/user.types";
+import { IUser } from "shared";
 
 export const userResolvers = {
   Query: {
-    me: async (_: any,__:any,{user}:{user:any}) => {
+    me: async (_: any, __: any, { user }: { user: IUser }) => {
       return user;
+    },
+    logout: async (_: any, __: any, { res }: { res: Response }) => {
+      res.cookie("token", "", {
+        maxAge: 0,
+      });
+      return true;
     },
   },
   Mutation: {

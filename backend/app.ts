@@ -4,9 +4,9 @@ import { DbConnect } from "./db/dbConnect";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { startApolloServer } from "./apollo/apolloServer";
-dotenv.config();
 
 const app = express();
+dotenv.config();
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,

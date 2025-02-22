@@ -10,7 +10,7 @@ export const userTypeDefs = gql`
     id: ID!
     name: String!
     email: String!
-    password: String!
+    password: String
     phoneNo: String!
     avatar: Avatar
     role: [String]
@@ -27,6 +27,7 @@ export const userTypeDefs = gql`
 
   type Query {
     me: User
+    logout:Boolean
   }
 
   type Mutation {
