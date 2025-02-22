@@ -20,9 +20,11 @@ import {
 } from "@/graphql/mutations/user.mutations";
 import { toastNotification } from "@/helpers/helpers";
 import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface AuthProps {
   toggleAuth: () => void;
+  setAuthType: React.Dispatch<React.SetStateAction<"signIn" | "signUp">>;
 }
 
 const AuthModal = () => {
@@ -57,7 +59,7 @@ const AuthModal = () => {
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.3 }}
             >
-              <Login toggleAuth={() => setAuthType("signUp")} />
+              <Login toggleAuth={() => setAuthType("signUp")} setAuthType={setAuthType}/>
             </motion.div>
           ) : (
             <motion.div
@@ -67,7 +69,7 @@ const AuthModal = () => {
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.3 }}
             >
-              <SignUp toggleAuth={() => setAuthType("signIn")} />
+              <SignUp toggleAuth={() => setAuthType("signIn")} setAuthType={setAuthType}/>
             </motion.div>
           )}
         </AnimatePresence>
@@ -77,6 +79,7 @@ const AuthModal = () => {
 };
 
 function Login({ toggleAuth }: AuthProps) {
+  const navigate = useNavigate()
   const [loginUser, { loading, error }] = useMutation(LOGIN_USER_MUTATION, {
     onCompleted: () => {
       toast({
@@ -84,6 +87,7 @@ function Login({ toggleAuth }: AuthProps) {
         description: "You can browse the site now.",
         variant:"success"
       });
+      navigate("/");
     },
   });
 
@@ -164,7 +168,7 @@ function Login({ toggleAuth }: AuthProps) {
   );
 }
 
-function SignUp({ toggleAuth }: AuthProps) {
+function SignUp({ toggleAuth,setAuthType }: AuthProps) {
   const [registerUser, { loading, error }] = useMutation(
     REGISTER_USER_MUTATION,
     {
@@ -173,6 +177,7 @@ function SignUp({ toggleAuth }: AuthProps) {
           title: "Account created",
           description: "You can now log in to your account.",
         });
+        setAuthType("signIn");
       },
     }
   );
