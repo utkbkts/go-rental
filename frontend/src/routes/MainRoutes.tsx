@@ -5,6 +5,7 @@ import React, { Suspense } from "react";
 
 const HomePage = React.lazy(() => import("@/pages/home/HomePage"));
 const DetailsPage = React.lazy(() => import("@/pages/details/DetailsPage"));
+const LoginPage = React.lazy(() => import("@/pages/auth/AuthPage"));
 export const MainRoutes = {
   path: "/",
   element: <MainLayout />,
@@ -23,6 +24,14 @@ export const MainRoutes = {
       element: (
         <Suspense fallback={<Loading />}>
           <DetailsPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/login",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <LoginPage />
         </Suspense>
       ),
     },

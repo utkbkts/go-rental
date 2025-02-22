@@ -1,10 +1,12 @@
 import Header from "@/components/layout/header/Header";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const MainLayout = () => {
+  const pathname = useLocation().pathname;
+  const startRoute = pathname.startsWith("/login");
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      {!startRoute && <Header />}
       <div className="flex-grow">
         <Outlet />
       </div>

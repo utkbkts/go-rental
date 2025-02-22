@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import MobileMenu from "./partials/MobileMenu";
-import { FaCar } from "react-icons/fa"; 
+import { FaCar } from "react-icons/fa";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,9 +25,11 @@ const Header = () => {
           </h1>
         </Link>
         <div className="hidden md:flex items-center gap-4">
-          <Button className="cursor-pointer hover:bg-blue-500 hover:text-white transition duration-300 m">
-            Login
-          </Button>
+          <Link to={"/login"}>
+            <Button className="cursor-pointer hover:bg-blue-500 hover:text-white transition duration-300 m">
+              Login
+            </Button>
+          </Link>
           <div className="relative">
             {/* Avatar with Menu */}
             {/* Dropdown Menu */}

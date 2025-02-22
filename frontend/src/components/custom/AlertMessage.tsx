@@ -9,18 +9,20 @@ type Props = {
 
 const AlertMessage = ({ title, description, color = "red" }: Props) => {
   return (
-    <Alert
-      variant={"destructive"}
-      className={color === "green" ? "text-green-800 border-green-800" : ""}
-    >
-      {color === "red" ? (
-        <AlertCircle className="w-4 h-4" color={color} />
-      ) : (
-        <CircleCheckBig color={color} className="w-4 h-4" />
-      )}
-      <AlertTitle>{title}</AlertTitle>
-      <AlertDescription>{description}</AlertDescription>
-    </Alert>
+    <div className="fixed top-4 righ-4 z-[999]">
+      <Alert
+        variant={"destructive"}
+        className={color === "green" ? "text-green-800 border-green-800" : ""}
+      >
+        {color === "red" ? (
+          <AlertCircle className="w-4 h-4" color={color} />
+        ) : (
+          <CircleCheckBig color={color} className="w-4 h-4" />
+        )}
+        <AlertTitle>{title}</AlertTitle>
+        <AlertDescription>{description}</AlertDescription>
+      </Alert>
+    </div>
   );
 };
 
