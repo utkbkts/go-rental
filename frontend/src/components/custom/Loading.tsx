@@ -7,14 +7,16 @@ interface Props {
   className?: string;
 }
 
-const Loading = ({ className, fullScreen = false, size=5 }: Props) => {
+const Loading = ({ className, fullScreen = false, size = 5 }: Props) => {
   const spinner = (
     <LoaderCircle className={cn("animate-spin", className)} size={size} />
   );
 
   if (fullScreen) {
     return (
-      <div className="flex items-center justify-center min-h-screen">{spinner}</div>
+      <div className="flex items-center justify-center min-h-screen">
+        {spinner}
+      </div>
     );
   }
 

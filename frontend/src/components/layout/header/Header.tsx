@@ -39,8 +39,8 @@ const Header = () => {
 
   const logoutHandler = async () => {
     try {
-       logout();
-       clearApolloCache();
+      logout();
+      clearApolloCache();
 
       client.writeQuery({
         query: CURRENT_USER,
@@ -94,7 +94,9 @@ const Header = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <Link to={"/me/profile"}>
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                  </Link>
                   {currentUser?.role?.includes("admin") && (
                     <DropdownMenuItem>Dashboard</DropdownMenuItem>
                   )}
