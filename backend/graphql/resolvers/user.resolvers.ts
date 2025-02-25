@@ -1,5 +1,9 @@
 import { Response } from "express";
-import { login, registerUser } from "../../controllers/user.controllers";
+import {
+  login,
+  registerUser,
+  updateUserProfile,
+} from "../../controllers/user.controllers";
 import { UserInput } from "../../types/user.types";
 import { IUser } from "shared";
 
@@ -26,6 +30,13 @@ export const userResolvers = {
       { res }: { res: Response }
     ) => {
       return login(email, password, res);
+    },
+    updateUserProfile: async (
+      _: any,
+      { userInput }: { userInput: Partial<UserInput> },
+      { user }: { user: IUser }
+    ) => {
+      return updateUserProfile(userInput,user.id);
     },
   },
 };

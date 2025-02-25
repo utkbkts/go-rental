@@ -4,10 +4,11 @@ import NotFound from "@/components/custom/NotFound";
 import UserLayout from "@/layouts/UserLayout";
 import { userLoader } from "@/loaders/userLoader";
 
-const Profile = React.lazy(()=>import("@/pages/users/profile/Profile"))
+const Profile = React.lazy(() => import("@/pages/users/profile/Profile"));
 
-const UpdatePassword = React.lazy(()=>import("@/pages/users/updatePassword/UpdatePassword"))
-
+const UpdatePassword = React.lazy(
+  () => import("@/pages/users/updatePassword/UpdatePassword")
+);
 
 export const UserRoutes = {
   path: "/me",
@@ -15,7 +16,7 @@ export const UserRoutes = {
     <Suspense
       fallback={
         <div>
-          <Loading fullScreen={true}/>
+          <Loading fullScreen={true} />
         </div>
       }
     >
@@ -34,7 +35,7 @@ export const UserRoutes = {
       ),
     },
     {
-      path: "update_password",
+      path: "update-password",
       element: (
         <Suspense>
           <UpdatePassword />

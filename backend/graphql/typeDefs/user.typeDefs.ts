@@ -25,13 +25,20 @@ export const userTypeDefs = gql`
     phoneNo: String!
   }
 
+  input UpdateUserInput {
+    name: String!
+    email: String!
+    phoneNo: String!
+  }
+
   type Query {
     me: User
-    logout:Boolean
+    logout: Boolean
   }
 
   type Mutation {
     registerUser(userInput: UserInput!): User
     login(email: String!, password: String!): User
+    updateUserProfile(userInput: UpdateUserInput!): Boolean
   }
 `;
