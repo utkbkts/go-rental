@@ -5,7 +5,7 @@ const MainLayout = () => {
   const pathname = useLocation().pathname;
   const startRoute = pathname.startsWith("/login");
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen w-full">
       {!startRoute && <Header />}
       <div className="flex-grow">
         <Outlet />

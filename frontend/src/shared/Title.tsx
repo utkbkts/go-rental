@@ -10,16 +10,6 @@ const Title = ({ title }: Props) => {
       {title}
       </span>
 
-      {/* Arka Plandaki Şekilli Görsel */}
-      <img
-        src="/bg-remove.jpg"
-        alt="bg-remove"
-        className="absolute -z-10 -top-42 xl:block hidden"
-        style={{
-          clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
-        }}
-      />
-
       {/* Başlık */}
       <h1 className="text-6xl font-semibold font-cavet xl:text-white text-black relative z-10">{title}</h1>
 

@@ -1,6 +1,4 @@
 import { useQuery } from "@apollo/client";
-import SearchMenu from "@/components/custom/Search";
-import Slider from "./partials/Slider";
 import SectionRepair from "./partials/SectionRepair";
 import FeaturesCards from "@/components/cards/FeaturesCards";
 import Title from "@/shared/Title";
@@ -10,16 +8,33 @@ import Loading from "@/components/custom/Loading";
 import Sidebar from "./partials/Sidebar";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "@/components/custom/Pagination";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toastNotification } from "@/helpers/helpers";
+import SectionDetails from "./partials/SectionDetails";
+import { images } from "./slider/data/data";
+import SliderOne from "./slider/partials/SliderOne";
+import SliderTwo from "./slider/partials/SliderTwo";
+import SliderThree from "./slider/partials/SliderThree";
+import HeroSub from "./partials/HeroSub";
+import SectionInformation from "./partials/SectionInformation";
 
 const HomePage = () => {
+  const [current, setCurrent] = useState(0);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
   const category = searchParams.get("category");
   const brand = searchParams.get("brand");
   const transmission = searchParams.get("transmission");
   const page = parseInt(searchParams.get("page") || "1", 10);
+
+  //slider
+  const nextSlider = () => {
+    setCurrent((prev) => (prev + 1) % images.length);
+  };
+
+  const prevSlider = () => {
+    setCurrent((prev) => (prev - 1 + images.length) % images.length);
+  };
 
   const filters = {
     status: "Active",
@@ -47,15 +62,45 @@ const HomePage = () => {
   }
 
   return (
-    <div className="w-full select-none">
+    <div className="w-full ">
       {/* HERO */}
-      <Slider />
-      {/* SEARCH MENU */}
-      <div className="relative">
-        <SearchMenu />
+      {current === 0 && (
+        <SliderOne
+          current={current}
+          prevSlider={prevSlider}
+          nextSlider={nextSlider}
+        />
+      )}
+      {current === 1 && (
+        <SliderTwo
+          current={current}
+          prevSlider={prevSlider}
+          nextSlider={nextSlider}
+        />
+      )}
+      {current === 2 && (
+        <SliderThree
+          current={current}
+          prevSlider={prevSlider}
+          nextSlider={nextSlider}
+        />
+      )}
+      {/* HERO SUB */}
+      <div>
+        <HeroSub />
+      </div>
+      {/* SECTION DETAILS */}
+      <div className="max-w-6xl mx-auto">
+        <SectionDetails />
+      </div>
+      {/* SECTION INFORMATION */}
+      <div className="mt-24">
+        <SectionInformation />
       </div>
       {/* SECTION REPAIR */}
-      <SectionRepair />
+      <div className="max-w-6xl mx-auto">
+        <SectionRepair />
+      </div>
       {/* SECTION CARD */}
       <div className="container mx-auto min-h-screen ">
         <Title title="Car's" />

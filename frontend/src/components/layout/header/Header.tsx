@@ -18,8 +18,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getUserName } from "@/helpers/helpers";
 import client, { clearApolloCache } from "@/apollo/apolloClient";
 import { toast } from "@/hooks/use-toast";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+  const [scrollY, setScrollY] = useState(false);
   const { loading, data } = useQuery(CURRENT_USER, {
     onCompleted: (data) => {
       userVar(data?.me);
@@ -59,13 +61,24 @@ const Header = () => {
     }
   };
 
+  //window scrol
+  useEffect(() => {
+    const handleScroll = () => {
+      const scroll = window.scrollY;
+      setScrollY(scroll > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="shadow-md w-full py-4  bg-white dark:bg-gray-800 transition-colors duration-300">
-      <div className="flex items-center justify-between container mx-auto">
+    <div className="fixed top-0 z-50 bg-black/50 w-full h-20 flex items-center justify-center">
+      <div className="flex items-center justify-between max-w-6xl w-full mx-auto">
         <Link to={"/"}>
-          <h1 className="text-2xl flex items-center gap-2 font-semibold text-gray-800 dark:text-white">
-            <FaCar className="text-blue-500 mt-1" />
-            Car{" "}
+          <h1 className={`transition-all duration-500 flex items-center gap-2 font-semibold text-gray-100 ${scrollY ? "text-xl": "text-4xl"}`}>
+            <FaCar className={`text-blue-700 transition-all duration-500   mt-1 ${scrollY ? "text-xl": "text-[52px]"}`} />
+            Car
             <span className="text-blue-400 font-bold underline-offset-2 underline">
               Go
             </span>
