@@ -15,5 +15,8 @@ export const LOGIN_USER_MUTATION = gql`
     }
   }
 `;
-
-
+export const UPDATE_PROFILE_MUTATION = gql`
+  mutation Mutation($userInput: UpdateUserInput!) {
+    updateUserProfile(userInput: $userInput)
+  }
+`;

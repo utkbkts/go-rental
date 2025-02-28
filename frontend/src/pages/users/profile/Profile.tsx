@@ -1,9 +1,10 @@
+import TabsClick from "../tabs/TabsClick";
 
 const Profile = () => {
   return (
-    <div>
-      Profile
-    </div>
+    <main className="mt-32 container mx-auto px-4">
+     <TabsClick/>
+    </main>
   );
 };
 

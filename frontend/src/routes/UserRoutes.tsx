@@ -6,9 +6,6 @@ import { userLoader } from "@/loaders/userLoader";
 
 const Profile = React.lazy(() => import("@/pages/users/profile/Profile"));
 
-const UpdatePassword = React.lazy(
-  () => import("@/pages/users/updatePassword/UpdatePassword")
-);
 
 export const UserRoutes = {
   path: "/me",
@@ -31,14 +28,6 @@ export const UserRoutes = {
       element: (
         <Suspense>
           <Profile />
-        </Suspense>
-      ),
-    },
-    {
-      path: "update-password",
-      element: (
-        <Suspense>
-          <UpdatePassword />
         </Suspense>
       ),
     },

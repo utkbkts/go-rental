@@ -14,22 +14,14 @@ const requiredStringPassword = z
     message: "Invalid characters",
   });
 
-  const requiredStringPhoneNo = z
+const requiredStringPhoneNo = z
   .string({ required_error: "required" })
   .regex(/^\d{3}\s\d{3}\s\d{2}\s\d{2}$/g, "Telephone number is invalid");
 
-export const createFormSchema = z.object({
+export const updateProfileSchema = z.object({
   name: requiredStringName,
   email: z.string().email(),
-  password: requiredStringPassword,
   phoneNo: requiredStringPhoneNo,
 });
 
-export type createFormData = z.infer<typeof createFormSchema>;
-
-export const loginFormSchema = z.object({
-  email: z.string().email(),
-  password: requiredStringPassword,
-});
-
-export type createLoginData = z.infer<typeof loginFormSchema>;
+export type createUpdateProfileSchema = z.infer<typeof updateProfileSchema>;
