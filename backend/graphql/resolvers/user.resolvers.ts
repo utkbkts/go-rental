@@ -2,6 +2,7 @@ import { Response } from "express";
 import {
   login,
   registerUser,
+  updatePassword,
   updateUserProfile,
 } from "../../controllers/user.controllers";
 import { UserInput } from "../../types/user.types";
@@ -36,7 +37,17 @@ export const userResolvers = {
       { userInput }: { userInput: Partial<UserInput> },
       { user }: { user: IUser }
     ) => {
-      return updateUserProfile(userInput,user.id);
+      return updateUserProfile(userInput, user.id);
+    },
+    updatePassword: async (
+      _: any,
+      {
+        oldPassword,
+        newPassword,
+      }: { oldPassword: string; newPassword: string },
+      { user }: { user: IUser }
+    ) => {
+      return updatePassword(oldPassword, newPassword, user.id);
     },
   },
 };

@@ -20,3 +20,9 @@ export const UPDATE_PROFILE_MUTATION = gql`
     updateUserProfile(userInput: $userInput)
   }
 `;
+
+export const UPDATE_PASSWORD_MUTATION = gql`
+  mutation UpdatePassword($oldPassword: String!, $newPassword: String!) {
+    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword)
+  }
+`;

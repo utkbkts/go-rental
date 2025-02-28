@@ -55,9 +55,29 @@ export const updateUserProfile = catchAsyncErrors(
       throw new Error("User not found");
     }
 
-     user?.set(userData);
-     await user.save();
-     
+    user?.set(userData);
+    await user.save();
+
+    return true;
+  }
+);
+
+export const updatePassword = catchAsyncErrors(
+  async (oldPassword: string, newPassword: string, userId: string) => {
+    const user = await User.findById(userId).select("+password");
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const comparePassword = bcrypt.compare(oldPassword, user?.password);
+
+    if (!comparePassword) {
+      throw new Error("Password is not matching");
+    }
+
+    user.password = newPassword;
+    await user.save();
     return true;
   }
 );

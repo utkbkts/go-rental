@@ -25,3 +25,16 @@ export const updateProfileSchema = z.object({
 });
 
 export type createUpdateProfileSchema = z.infer<typeof updateProfileSchema>;
+
+export const updatePasswordSchema = z
+  .object({
+    oldPassword: requiredStringPassword,
+    newPassword: requiredStringPassword,
+    confirmPassword: requiredStringPassword,
+  })
+  .refine((value) => value.newPassword === value.confirmPassword, {
+    message: "Password is do not match",
+    path: ["confirmPassword"],
+  });
+
+export type createUpdatePasswordSchema = z.infer<typeof updatePasswordSchema>;
