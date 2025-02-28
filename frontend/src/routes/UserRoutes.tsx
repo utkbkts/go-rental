@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import Loading from "@/components/custom/Loading";
 import NotFound from "@/components/custom/NotFound";
 import UserLayout from "@/layouts/UserLayout";
-import { userLoader } from "@/loaders/userLoader";
+import {userLoader} from "@/loaders/userLoader";
 
 const Profile = React.lazy(() => import("@/pages/users/profile/Profile"));
 

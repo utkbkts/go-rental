@@ -1,17 +1,12 @@
-import { isAuthenticatedVar, isLoadingVar } from "@/apollo/apolloVars";
+import { isAuthenticatedVar } from "@/apollo/apolloVars";
 import { redirect } from "react-router-dom";
-import Loading from "@/components/custom/Loading";
-export const userLoader = async () => {
-  const isAuthenticated = isAuthenticatedVar();
-  const loader = isLoadingVar();
 
-  if (loader) {
-    return <Loading />;
-  }
+export async function userLoader() {
+  const isAuthenticated = isAuthenticatedVar();
 
   if (!isAuthenticated) {
-    return redirect("/");
+    throw redirect("/"); 
   }
 
-  return null;
-};
+  return null; 
+}

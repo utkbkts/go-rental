@@ -4,6 +4,10 @@ import User from "../models/user.model";
 import { UserInput } from "../types/user.types";
 import * as bcrypt from "bcryptjs";
 import jwt, { Secret } from "jsonwebtoken";
+import {
+  deleteCloudinary,
+  uploadImagesToCloudinary,
+} from "../utils/cloudinary";
 
 export const registerUser = catchAsyncErrors(async (userInput: UserInput) => {
   const { email, name, password, phoneNo } = userInput;
@@ -78,6 +82,30 @@ export const updatePassword = catchAsyncErrors(
 
     user.password = newPassword;
     await user.save();
+    return true;
+  }
+);
+
+export const updateAvatar = catchAsyncErrors(
+  async (avatar: string, userId: string) => {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const avatarResponse = await uploadImagesToCloudinary(
+      avatar,
+      "gorental/avatars"
+    );
+
+    if (user?.avatar?.public_id) {
+      await deleteCloudinary(user?.avatar?.public_id);
+    }
+
+    await User.findByIdAndUpdate(userId, {
+      avatar: avatarResponse,
+    });
     return true;
   }
 );

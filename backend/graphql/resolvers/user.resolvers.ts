@@ -2,6 +2,7 @@ import { Response } from "express";
 import {
   login,
   registerUser,
+  updateAvatar,
   updatePassword,
   updateUserProfile,
 } from "../../controllers/user.controllers";
@@ -48,6 +49,15 @@ export const userResolvers = {
       { user }: { user: IUser }
     ) => {
       return updatePassword(oldPassword, newPassword, user.id);
+    },
+    updateAvatar: async (
+      _: any,
+      {
+        avatar,
+      }: { avatar: string; },
+      { user }: { user: IUser }
+    ) => {
+      return updateAvatar(avatar, user.id);
     },
   },
 };
