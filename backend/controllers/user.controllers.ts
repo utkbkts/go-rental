@@ -8,6 +8,8 @@ import {
   deleteCloudinary,
   uploadImagesToCloudinary,
 } from "../utils/cloudinary";
+import { resetPasswordTemplate } from "../utils/emailTemplate";
+import sendEmail from "../utils/sendEmail";
 
 export const registerUser = catchAsyncErrors(async (userInput: UserInput) => {
   const { email, name, password, phoneNo } = userInput;
@@ -99,8 +101,8 @@ export const updateAvatar = catchAsyncErrors(
       "gorental/avatars"
     );
 
-    if(!avatarResponse){
-      throw new Error("Avatar response error")
+    if (!avatarResponse) {
+      throw new Error("Avatar response error");
     }
 
     if (user?.avatar?.public_id) {
@@ -117,3 +119,32 @@ export const updateAvatar = catchAsyncErrors(
     return true;
   }
 );
+
+export const forgotPassword = catchAsyncErrors(async (email: string) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const resetToken = user.getResetPasswordToken();
+
+  const resetUrl = `/${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+
+  const message = resetPasswordTemplate(user?.name, resetUrl);
+
+  try {
+    await sendEmail({
+      email: user?.email,
+      subject: "Go Rental Password Recovery",
+      message,
+    });
+  } catch (error: any) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    throw new Error(error?.message);
+  }
+});

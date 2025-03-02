@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
-import { UserRoles } from "shared";
+import { IUser, UserRoles } from "shared";
 import * as bcrypt from "bcryptjs";
+import crypto from "crypto";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema<IUser>(
   {
     name: {
       type: String,
@@ -53,6 +54,19 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
+
+userSchema.methods.getResetPasswordToken = function (): string {
+  const resetToken = crypto.randomBytes(20).toString("hex");
+
+  this.resetPasswordToken = crypto
+    .createHash("256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+
+  return resetToken;
+};
 
 const User = mongoose.model("User", userSchema);
 export default User;

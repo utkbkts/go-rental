@@ -15,8 +15,6 @@ export const UserRoles = ["user", "admin"];
 export const CarDoors = [2, 4];
 export const CarSeats = [2, 4, 5, 7, 8, 9, 10];
 
-
-
 export interface IUser {
   id: string;
   name: string;
@@ -32,6 +30,7 @@ export interface IUser {
   role?: string[];
   createdAt: string;
   updatedAt: string;
+  getResetPasswordToken(): string;
 }
 
 export interface ICar {

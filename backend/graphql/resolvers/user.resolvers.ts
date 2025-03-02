@@ -1,5 +1,6 @@
 import { Response } from "express";
 import {
+  forgotPassword,
   login,
   registerUser,
   updateAvatar,
@@ -52,12 +53,13 @@ export const userResolvers = {
     },
     updateAvatar: async (
       _: any,
-      {
-        avatar,
-      }: { avatar: string; },
+      { avatar }: { avatar: string },
       { user }: { user: IUser }
     ) => {
       return updateAvatar(avatar, user.id);
+    },
+    forgotPassword: async (_: any, { email }: { email: string }) => {
+      return forgotPassword(email);
     },
   },
 };
