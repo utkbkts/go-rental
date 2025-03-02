@@ -21,7 +21,7 @@ import {
 import { toastNotification } from "@/helpers/helpers";
 import { toast } from "@/hooks/use-toast";
 import { CURRENT_USER } from "@/graphql/queries/user.queries";
-import { isAuthenticatedVar } from "@/apollo/apolloVars";
+import { isAuthenticatedVar, isLoadingVar, userVar } from "@/apollo/apolloVars";
 
 interface AuthProps {
   toggleAuth: () => void;
@@ -81,24 +81,20 @@ const AuthModal = () => {
 
 function Login({ toggleAuth }: AuthProps) {
   const [LoginUser, { loading, error }] = useMutation(LOGIN_USER_MUTATION, {
-    update(cache, { data }) {
-      if (data.login) {
-        isAuthenticatedVar(true);
-        cache.writeQuery({
-          query: CURRENT_USER, 
-          data: { me: data.login },
-        });
-      }
-    },
-    onCompleted: () => {
+    refetchQueries: [{ query: CURRENT_USER }],
+    onCompleted: (data) => {
+      userVar(data.login); 
+      isAuthenticatedVar(true);
+      isLoadingVar(false);
       toast({
         title: "You have successfully logged in.",
         description: "You can browse the site now.",
-        variant:"success"
+        variant: "success"
       });
-      // navigate("/");
     },
   });
+  
+    
 
   useEffect(() => {
     if (error) {

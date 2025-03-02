@@ -26,3 +26,9 @@ export const UPDATE_PASSWORD_MUTATION = gql`
     updatePassword(oldPassword: $oldPassword, newPassword: $newPassword)
   }
 `;
+
+export const UPDATE_AVATAR_MUTATION = gql`
+  mutation UpdateAvatar($avatar: String!) {
+    updateAvatar(avatar: $avatar)
+  }
+`;

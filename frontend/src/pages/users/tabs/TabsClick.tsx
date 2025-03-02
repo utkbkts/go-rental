@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UpdatePassword from "../updatePassword/UpdatePassword";
 import UserProfile from "../profile/UserProfile";
+import UpdateAvatar from "../updateAvatar/UpdataAvatar";
 const TabsClick = () => {
   return (
     <section>
@@ -30,18 +31,13 @@ const TabsClick = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="profile" className="mt-6">
-          <UserProfile/>
+            <UserProfile />
           </TabsContent>
           <TabsContent value="update-password" className="mt-6">
-           <UpdatePassword/>
+            <UpdatePassword />
           </TabsContent>
           <TabsContent value="update-avatar" className="mt-6">
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                Update avatar
-              </h2>
-              <p className="text-gray-600">Change your avatar here.</p>
-            </div>
+            <UpdateAvatar />
           </TabsContent>
         </Tabs>
       </div>

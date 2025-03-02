@@ -38,3 +38,15 @@ export const updatePasswordSchema = z
   });
 
 export type createUpdatePasswordSchema = z.infer<typeof updatePasswordSchema>;
+
+export const UpdateAvatarSchema = z.object({
+  avatar: z
+  .instanceof(File, { message: "Please upload an image file" })
+  .refine((file) => file.size < 3 * 1024 * 1024, {
+    message: "Image must be less than 3MB",
+  }),
+});
+
+export type createUpdateAvatarSchema = z.infer<typeof UpdateAvatarSchema>;
+// Base64 veya URL olarak saklanacaksa → z.string()
+// Doğrudan bir dosya (File) olarak saklanacaksa → z.instanceof(File)

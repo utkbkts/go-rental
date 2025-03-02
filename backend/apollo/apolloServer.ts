@@ -44,6 +44,7 @@ export async function startApolloServer(app: Application) {
     expressMiddleware(apolloServer, {
       context: async ({ req, res }: { req: Request; res: Response }) => {
         const token = req.cookies?.token;
+        
         let user = null;
         if(token){
           try {

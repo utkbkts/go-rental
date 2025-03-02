@@ -1,4 +1,3 @@
-import { error } from "console";
 import { NotFoundError } from "../utils/errorHandler";
 
 export const catchAsyncErrors =

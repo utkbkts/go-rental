@@ -99,13 +99,21 @@ export const updateAvatar = catchAsyncErrors(
       "gorental/avatars"
     );
 
+    if(!avatarResponse){
+      throw new Error("Avatar response error")
+    }
+
     if (user?.avatar?.public_id) {
       await deleteCloudinary(user?.avatar?.public_id);
     }
 
-    await User.findByIdAndUpdate(userId, {
-      avatar: avatarResponse,
-    });
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        avatar: avatarResponse,
+      },
+      { new: true }
+    );
     return true;
   }
 );

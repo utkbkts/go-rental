@@ -1,4 +1,4 @@
-import { useLazyQuery, useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery, useReactiveVar } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -16,48 +16,35 @@ import { CURRENT_USER, LOGOUT_USER } from "@/graphql/queries/user.queries";
 import { isAuthenticatedVar, isLoadingVar, userVar } from "@/apollo/apolloVars";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUserName } from "@/helpers/helpers";
-import client, { clearApolloCache } from "@/apollo/apolloClient";
 import { toast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 
 const Header = () => {
   const [scrollY, setScrollY] = useState(false);
-  const { loading, data } = useQuery(CURRENT_USER, {
-    onCompleted: (data) => {
-      userVar(data?.me);
-      isAuthenticatedVar(true);
-      isLoadingVar(false);
-    },
-    onError: () => {
-      userVar(null);
-      isAuthenticatedVar(false);
-      isLoadingVar(false);
-    },
+  const { loading } = useQuery(CURRENT_USER, {
+    fetchPolicy: "cache-and-network",
   });
 
-  const currentUser = data?.me;
+  const currentUser = useReactiveVar(userVar);
 
-  const [logout] = useLazyQuery(LOGOUT_USER);
-
-  const logoutHandler = async () => {
-    try {
-      logout();
-      clearApolloCache();
-
-      client.writeQuery({
-        query: CURRENT_USER,
-        data: { me: null },
-      });
-
-      userVar(null);
-      isAuthenticatedVar(false);
+  const [logout] = useLazyQuery(LOGOUT_USER, {
+    onCompleted: () => {
+      userVar(null); 
+      isAuthenticatedVar(false); 
+      isLoadingVar(false);
 
       toast({
         title: "You have successfully logged out.",
         variant: "success",
       });
+    },
+  });
+
+  const logoutHandler = async () => {
+    try {
+      logout();
     } catch (error) {
-      console.error("Çıkış yapılırken hata oluştu:", error);
+      console.error(error);
     }
   };
 
@@ -76,8 +63,16 @@ const Header = () => {
     <div className="fixed top-0 z-50 bg-black/50 w-full h-20 flex items-center justify-center">
       <div className="flex items-center justify-between max-w-6xl w-full mx-auto">
         <Link to={"/"}>
-          <h1 className={`transition-all duration-500 flex items-center gap-2 font-semibold text-gray-100 ${scrollY ? "text-xl": "text-4xl"}`}>
-            <FaCar className={`text-blue-700 transition-all duration-500   mt-1 ${scrollY ? "text-xl": "text-[52px]"}`} />
+          <h1
+            className={`transition-all duration-500 flex items-center gap-2 font-semibold text-gray-100 ${
+              scrollY ? "text-xl" : "text-4xl"
+            }`}
+          >
+            <FaCar
+              className={`text-blue-700 transition-all duration-500   mt-1 ${
+                scrollY ? "text-xl" : "text-[52px]"
+              }`}
+            />
             Car
             <span className="text-blue-400 font-bold underline-offset-2 underline">
               Go
@@ -100,7 +95,7 @@ const Header = () => {
                   <Avatar className="cursor-pointer my-1">
                     <AvatarImage src={currentUser?.avatar?.url} />
                     <AvatarFallback className="uppercase cursor-pointer">
-                      {getUserName(currentUser?.name) || "?"}
+                      {getUserName(currentUser?.name) || currentUser?.avatar?.url}
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
