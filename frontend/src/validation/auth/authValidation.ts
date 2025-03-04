@@ -33,3 +33,11 @@ export const loginFormSchema = z.object({
 });
 
 export type createLoginData = z.infer<typeof loginFormSchema>;
+
+
+
+export const forgotFormSchema = z.object({
+  email: z.string().email(),
+});
+
+export type createForgotPassword = z.infer<typeof forgotFormSchema>;

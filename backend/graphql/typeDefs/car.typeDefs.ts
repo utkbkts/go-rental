@@ -56,6 +56,10 @@ export const carTypeDefs = gql`
     lt: Int
     lte: Int
   }
+  input YearFilter {
+    gte: Int
+    lte: Int
+  }
 
   input CarFilters {
     category: String
@@ -63,6 +67,7 @@ export const carTypeDefs = gql`
     transmission: String
     status: String
     rentPerDay: RentPerDayFilter
+    year: YearFilter
   }
 
   type Pagination {

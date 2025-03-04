@@ -126,10 +126,10 @@ export const forgotPassword = catchAsyncErrors(async (email: string) => {
   if (!user) {
     throw new Error("User not found");
   }
-
   const resetToken = user.getResetPasswordToken();
 
-  const resetUrl = `/${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+
+  const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
   const message = resetPasswordTemplate(user?.name, resetUrl);
 
@@ -139,6 +139,7 @@ export const forgotPassword = catchAsyncErrors(async (email: string) => {
       subject: "Go Rental Password Recovery",
       message,
     });
+    console.log("temix")
   } catch (error: any) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;

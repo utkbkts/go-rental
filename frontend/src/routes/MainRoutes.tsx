@@ -33,7 +33,7 @@ export const MainRoutes = {
       element: (
         <Suspense fallback={<Loading />}>
           <ProtectedRoute>
-          <LoginPage />
+            <LoginPage />
           </ProtectedRoute>
         </Suspense>
       ),

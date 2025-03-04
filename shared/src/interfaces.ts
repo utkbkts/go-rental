@@ -14,6 +14,18 @@ export const CarTransmissions = ["Automatic", "Manual"];
 export const UserRoles = ["user", "admin"];
 export const CarDoors = [2, 4];
 export const CarSeats = [2, 4, 5, 7, 8, 9, 10];
+export const CarModels = [
+  "A4",
+  "X5",
+  "Mustang",
+  "Civic",
+  "Elantra",
+  "Altima",
+  "Camry",
+  "Impala",
+  "C-Class",
+  "Golf",
+];
 
 export interface IUser {
   id: string;

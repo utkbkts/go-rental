@@ -26,4 +26,10 @@ export type CarFilters = {
     lt: number;
     lte: number;
   };
+  year: {
+    gt: number;
+    gte: number;
+    lt: number;
+    lte: number;
+  };
 };

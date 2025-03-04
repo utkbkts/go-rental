@@ -3,6 +3,7 @@ import AuthModal from "./partials/AuthModal";
 import RightSection from "./partials/RightSection";
 
 const LoginPage = () => {
+
   return (
     <div className="w-full h-screen overflow-hidden">
       <div className="flex h-full">
@@ -10,7 +11,7 @@ const LoginPage = () => {
           <LeftSection />
           <AuthModal />
         </div>
-        <div className="w-full relative  bg-amber-200">
+        <div className="w-full relative bg-amber-200">
           <RightSection />
         </div>
       </div>

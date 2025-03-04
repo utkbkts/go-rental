@@ -9,7 +9,7 @@ import {
   CarBrand,
   CarCategories,
   CarTransmissions,
-} from "../../../../../shared/src/interfaces";
+} from "shared/src/interfaces";
 
 const Sidebar = () => {
   const [searchQuery, setSearchQuery] = useState("");

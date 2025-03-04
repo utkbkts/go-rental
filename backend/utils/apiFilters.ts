@@ -31,6 +31,7 @@ class APIFilters {
   filters(filters: any) {
     const filtersCopy = { ...filters };
 
+    console.log("🚀 ~ APIFilters ~ filters ~ filtersCopy:", filtersCopy);
     let filterStr = JSON.stringify(filtersCopy);
 
     filterStr = filterStr.replace(

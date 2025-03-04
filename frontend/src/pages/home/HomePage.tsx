@@ -1,22 +1,22 @@
 import { useQuery } from "@apollo/client";
-import SectionRepair from "./partials/SectionRepair";
+import SectionRepair from "./partials/sectionRepair/SectionRepair";
 import FeaturesCards from "@/components/cards/FeaturesCards";
 import Title from "@/shared/Title";
 import { GET_ALL_QUERIES } from "@/graphql/queries/car.queries";
 import { ICar } from "shared";
 import Loading from "@/components/custom/Loading";
-import Sidebar from "./partials/Sidebar";
+import Sidebar from "./partials/sidebar/Sidebar";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "@/components/custom/Pagination";
 import { useEffect, useState } from "react";
 import { toastNotification } from "@/helpers/helpers";
-import SectionDetails from "./partials/SectionDetails";
+import SectionDetails from "./partials/sectionDetails/SectionDetails";
 import { images } from "./slider/data/data";
 import SliderOne from "./slider/partials/SliderOne";
 import SliderTwo from "./slider/partials/SliderTwo";
 import SliderThree from "./slider/partials/SliderThree";
-import HeroSub from "./partials/HeroSub";
-import SectionInformation from "./partials/SectionInformation";
+import HeroSub from "./partials/heroSub/HeroSub";
+import SectionInformation from "./partials/sectionInformation/SectionInformation";
 
 const HomePage = () => {
   const [current, setCurrent] = useState(0);
@@ -94,7 +94,7 @@ const HomePage = () => {
         <SectionDetails />
       </div>
       {/* SECTION INFORMATION */}
-      <div className="mt-24">
+      <div className="mt-24 ">
         <SectionInformation />
       </div>
       {/* SECTION REPAIR */}

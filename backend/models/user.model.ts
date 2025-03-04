@@ -3,6 +3,9 @@ import { IUser, UserRoles } from "shared";
 import * as bcrypt from "bcryptjs";
 import crypto from "crypto";
 
+
+
+
 const userSchema = new mongoose.Schema<IUser>(
   {
     name: {
@@ -59,11 +62,11 @@ userSchema.methods.getResetPasswordToken = function (): string {
   const resetToken = crypto.randomBytes(20).toString("hex");
 
   this.resetPasswordToken = crypto
-    .createHash("256")
+    .createHash("sha256")
     .update(resetToken)
     .digest("hex");
 
-  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+  this.resetPasswordExpire = new Date(Date.now() + 15 * 60 * 1000); 
 
   return resetToken;
 };
