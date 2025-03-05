@@ -16,7 +16,7 @@ export default client;
 
 export const clearApolloCache = async () => {
   try {
-    await client.resetStore();
+    await client.clearStore();
   } catch (error) {
     console.error("Apollo Cache temizlenirken hata oluştu:", error);
   }

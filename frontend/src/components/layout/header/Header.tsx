@@ -22,17 +22,17 @@ import { useEffect, useState } from "react";
 const Header = () => {
   const [scrollY, setScrollY] = useState(false);
   const { loading } = useQuery(CURRENT_USER, {
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "no-cache",
   });
 
   const currentUser = useReactiveVar(userVar);
+  console.log("🚀 ~ Header ~ currentUser:", currentUser);
 
   const [logout] = useLazyQuery(LOGOUT_USER, {
     onCompleted: () => {
-      userVar(null); 
-      isAuthenticatedVar(false); 
+      userVar(null);
+      isAuthenticatedVar(false);
       isLoadingVar(false);
-
       toast({
         title: "You have successfully logged out.",
         variant: "success",
@@ -95,7 +95,8 @@ const Header = () => {
                   <Avatar className="cursor-pointer my-1">
                     <AvatarImage src={currentUser?.avatar?.url} />
                     <AvatarFallback className="uppercase cursor-pointer">
-                      {getUserName(currentUser?.name) || currentUser?.avatar?.url}
+                      {getUserName(currentUser?.name) ||
+                        currentUser?.avatar?.url}
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>

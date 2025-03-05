@@ -14,6 +14,14 @@ import sendEmail from "../utils/sendEmail";
 export const registerUser = catchAsyncErrors(async (userInput: UserInput) => {
   const { email, name, password, phoneNo } = userInput;
 
+  if (!email || !name || !password || !phoneNo) {
+    throw new Error("Fields cannot be left blank");
+  }
+  const emailExists = await User.findOne({ email });
+  if (emailExists) {
+    throw new Error("Email is being used");
+  }
+
   return await User.create({
     name,
     email,
@@ -59,6 +67,12 @@ export const updateUserProfile = catchAsyncErrors(
 
     if (!user) {
       throw new Error("User not found");
+    }
+
+    const userEmail = await User.findOne({ email: userData.email });
+
+    if (userEmail) {
+      throw new Error("Email is being used");
     }
 
     user?.set(userData);
@@ -128,7 +142,6 @@ export const forgotPassword = catchAsyncErrors(async (email: string) => {
   }
   const resetToken = user.getResetPasswordToken();
 
-
   const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
   const message = resetPasswordTemplate(user?.name, resetUrl);
@@ -139,7 +152,6 @@ export const forgotPassword = catchAsyncErrors(async (email: string) => {
       subject: "Go Rental Password Recovery",
       message,
     });
-    console.log("temix")
   } catch (error: any) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;

@@ -25,14 +25,17 @@ import { toastNotification } from "@/helpers/helpers";
 import { toast } from "@/hooks/use-toast";
 import { CURRENT_USER } from "@/graphql/queries/user.queries";
 import { isAuthenticatedVar, isLoadingVar, userVar } from "@/apollo/apolloVars";
-
 interface AuthProps {
   toggleAuth: () => void;
-  setAuthType: React.Dispatch<React.SetStateAction<"signIn" | "signUp" | "forgot">>;
+  setAuthType: React.Dispatch<
+    React.SetStateAction<"signIn" | "signUp" | "forgot">
+  >;
 }
 
 const AuthModal = () => {
-  const [authType, setAuthType] = useState<"signIn" | "signUp" | "forgot">("signIn");
+  const [authType, setAuthType] = useState<"signIn" | "signUp" | "forgot">(
+    "signIn"
+  );
 
   return (
     <>
@@ -51,7 +54,11 @@ const AuthModal = () => {
         className="absolute border border-gray-200 w-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white shadow-lg rounded-2xl p-6"
       >
         <h1 className="text-center uppercase font-extrabold text-2xl text-gray-700 mb-4">
-          {authType === "signUp" ? "Sign Up" : authType === "forgot" ? "Reset your password": "Sign In"}
+          {authType === "signUp"
+            ? "Sign Up"
+            : authType === "forgot"
+            ? "Reset your password"
+            : "Sign In"}
         </h1>
 
         <AnimatePresence mode="wait">
@@ -101,7 +108,7 @@ const AuthModal = () => {
   );
 };
 
-function Login({ toggleAuth,setAuthType }: AuthProps) {
+function Login({ toggleAuth, setAuthType }: AuthProps) {
   const [LoginUser, { loading, error }] = useMutation(LOGIN_USER_MUTATION, {
     refetchQueries: [{ query: CURRENT_USER }],
     onCompleted: (data) => {
@@ -161,7 +168,7 @@ function Login({ toggleAuth,setAuthType }: AuthProps) {
           <div className="flex items-center justify-between">
             <label className="text-gray-600 font-medium">Password</label>
             <label
-              onClick={()=>setAuthType("forgot")}
+              onClick={() => setAuthType("forgot")}
               className="text-gray-600 font-medium text-sm cursor-pointer"
             >
               Forgot your password ?{" "}
@@ -284,7 +291,7 @@ function SignUp({ toggleAuth, setAuthType }: AuthProps) {
           <EditInput
             control={form.control}
             name="phoneNo"
-            type="number"
+            type="text"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none transition"
             placeholder="Enter your phone number"
           />
@@ -316,36 +323,36 @@ function SignUp({ toggleAuth, setAuthType }: AuthProps) {
 }
 
 function ForgotPassword({ setAuthType }: AuthProps) {
-   const [forgotPassword, { loading, error }] = useMutation(FORGOT_PASSWORD, {
-     onCompleted: () => {
-       toast({
-         title: "Check your email account",
-         variant: "success",
-       });
-     },
-   });
- 
-   useEffect(() => {
-     if (error) {
-       toastNotification(error);
-     }
-   }, [error]);
- 
-   const form = useForm<createForgotPassword>({
-     resolver: zodResolver(forgotFormSchema),
-     defaultValues: {
-       email: "",
-     },
-     mode: "onChange",
-   });
- 
-   const onSubmit = async (data: createForgotPassword) => {
-     await forgotPassword({
-       variables: {
-         email: data.email,
-       },
-     });
-   };
+  const [forgotPassword, { loading, error }] = useMutation(FORGOT_PASSWORD, {
+    onCompleted: () => {
+      toast({
+        title: "Check your email account",
+        variant: "success",
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (error) {
+      toastNotification(error);
+    }
+  }, [error]);
+
+  const form = useForm<createForgotPassword>({
+    resolver: zodResolver(forgotFormSchema),
+    defaultValues: {
+      email: "",
+    },
+    mode: "onChange",
+  });
+
+  const onSubmit = async (data: createForgotPassword) => {
+    await forgotPassword({
+      variables: {
+        email: data.email,
+      },
+    });
+  };
 
   return (
     <Form {...form}>
@@ -378,7 +385,7 @@ function ForgotPassword({ setAuthType }: AuthProps) {
           Don't have an account?{" "}
           <button
             type="button"
-            onClick={()=>setAuthType("signUp")}
+            onClick={() => setAuthType("signUp")}
             className="text-blue-500 font-medium hover:underline cursor-pointer"
           >
             Sign up

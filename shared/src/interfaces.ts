@@ -9,6 +9,10 @@ export const CarBrand = [
   "Toyota",
 ];
 export const CarCategories = ["Sedan", "Convertible", "SUV", "Hatchback"];
+
+export const BookingPaymentMethods = ["card", "cash"];
+export const BookingPaymentStatus = ["paid", "pending"];
+
 export const CarFuelTypes = ["Petrol", "Diesel"];
 export const CarTransmissions = ["Automatic", "Manual"];
 export const UserRoles = ["user", "admin"];
@@ -70,6 +74,35 @@ export interface ICar {
     value: number;
     count: number;
   };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IBooking {
+  id: string;
+  user: IUser;
+  car: ICar;
+  startDate: Date;
+  endDate: Date;
+  customer: {
+    name: string;
+    email: string;
+    phoneNo: string;
+  };
+  amount: {
+    rent: number;
+    discount: number;
+    tax: number;
+    total: number;
+  };
+  daysOfRent: number;
+  rentPerDay: number;
+  paymentInfo: {
+    id: string;
+    status: string;
+    method: string;
+  };
+  additionalNotes: string;
   createdAt: string;
   updatedAt: string;
 }

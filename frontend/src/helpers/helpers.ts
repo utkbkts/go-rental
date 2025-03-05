@@ -15,11 +15,20 @@ export const updateSearchParams = (
 };
 
 export const toastNotification = (err: any) => {
-  const errMessage = err?.cause?.result?.errors[0]?.message || err?.message;
+  let errMessage =
+    err?.cause?.result?.errors?.[0]?.message ||
+    err?.message ||
+    "An error occurred";
+
+  if (errMessage.includes("Not Authorised")) {
+    errMessage = "Invalid credentials!";
+  }
+
   toast({
     variant: "destructive",
-    title: "Something went wrong !!",
+    title: "Authentication Error",
     description: errMessage,
+    duration: 1500,
   });
 };
 

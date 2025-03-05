@@ -3,9 +3,6 @@ import { IUser, UserRoles } from "shared";
 import * as bcrypt from "bcryptjs";
 import crypto from "crypto";
 
-
-
-
 const userSchema = new mongoose.Schema<IUser>(
   {
     name: {
@@ -66,7 +63,7 @@ userSchema.methods.getResetPasswordToken = function (): string {
     .update(resetToken)
     .digest("hex");
 
-  this.resetPasswordExpire = new Date(Date.now() + 15 * 60 * 1000); 
+  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 
   return resetToken;
 };
