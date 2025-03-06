@@ -36,8 +36,16 @@ export const bookingTypeDefs = gql`
     updatedAt: String!
   }
 
+  input UpdateBookingInput {
+    paymentInfo: PaymentInfoInput
+  }
+
   type Mutation {
     createBooking(bookingInput: BookingInput!): Booking!
+    updateBooking(
+      bookingId: String!
+      bookingInput: UpdateBookingInput!
+    ): Boolean
   }
   type Query {
     getBookingById(bookingId: String!): Booking!
@@ -75,8 +83,8 @@ export const bookingTypeDefs = gql`
   }
 
   input PaymentInfoInput {
-    id: String!
-    status: String!
-    method: String!
+    id: String
+    status: String
+    method: String
   }
 `;

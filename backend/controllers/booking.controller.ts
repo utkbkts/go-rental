@@ -31,3 +31,30 @@ export const getBookingById = catchAsyncErrors(
     return booking;
   }
 );
+
+export const updateBooking = catchAsyncErrors(
+  async (
+    bookingId: string,
+    bookingInput: Partial<BookingInput>,
+    user: IUser
+  ) => {
+    if (!bookingInput) {
+      throw new NotFoundError("bookingInput is required");
+    }
+    const booking = await Booking.findById(bookingId);
+
+    if (!booking) {
+      throw new NotFoundError("Booking not found");
+    }
+
+    if (!user.role?.includes("admin") && booking.user.toString() !== user.id) {
+      throw new NotFoundError(
+        "You do not have permission to access this action"
+      );
+    }
+
+    await booking.set(bookingInput).save();
+
+    return true;
+  }
+);

@@ -12,15 +12,18 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import AlertMessage from "@/components/custom/AlertMessage";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { GET_BOOKING_BY_ID } from "@/graphql/queries/booking.queries";
 import { useParams } from "react-router-dom";
 import Loading from "@/components/custom/Loading";
 import NotFound from "@/components/custom/NotFound";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { UPDATE_BOOKING_MUTATION } from "@/graphql/mutations/booking.mutation";
+import { toast } from "@/hooks/use-toast";
 
 const PaymentMethod = () => {
   const params = useParams();
+  const [paymentMethod, setPaymentMethod] = useState("cash");
   const {
     data,
     loading: bookingLoading,
@@ -28,9 +31,51 @@ const PaymentMethod = () => {
   } = useQuery(GET_BOOKING_BY_ID, {
     variables: { bookingId: params?.id },
   });
-  const [paymentMethod, setPaymentMethod] = useState("cash");
+
+  //update
+  const [updateBooking] = useMutation(UPDATE_BOOKING_MUTATION, {
+    onCompleted: () => {
+      toast({
+        title: "Booking Updated",
+        description: "Your booking has been updated successfully",
+        variant: "success",
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (bookingError) {
+      toast({
+        title: `${bookingError}`,
+        variant: "success",
+      });
+    }
+  }, [bookingError]);
+
+  const handleBookingUpdate = async () => {
+    if (paymentMethod === "cash") {
+      const bookingInput = {
+        paymentInfo: {
+          method: "cash",
+        },
+      };
+      await updateBooking({
+        variables: { bookingId: params?.id, bookingInput },
+      });
+    }
+    if (paymentMethod === "card") {
+      const bookingInput = {
+        paymentInfo: {
+          method: "card",
+        },
+      };
+      await updateBooking({
+        variables: { bookingId: params?.id, bookingInput },
+      });
+    }
+  };
+
   const booking = data?.getBookingById;
-  console.log("🚀 ~ PaymentMethod ~ booking:", booking);
 
   if (bookingLoading) {
     return <Loading size={60} fullScreen={true} />;
@@ -148,7 +193,7 @@ const PaymentMethod = () => {
             )}
           </CardContent>
           <CardFooter>
-            <Button className="w-full">
+            <Button onClick={handleBookingUpdate} className="w-full">
               <CreditCard className="mr-2 h-4 w-4" />{" "}
               {paymentMethod === "card" ? "Pay with Card" : "Pay Cash"}
             </Button>
