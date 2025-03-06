@@ -7,6 +7,7 @@ import { ICar } from "shared";
 import moment from "moment";
 import StarRatings from "react-star-ratings";
 import NotFound from "@/components/custom/NotFound";
+import BookingForm from "./partials/BookingForm";
 
 const DetailsPage = () => {
   const params = useParams();
@@ -33,16 +34,17 @@ const DetailsPage = () => {
     description,
     doors,
     fuelType,
+    rentPerDay,
     images,
     milleage,
     name,
     power,
     ratings,
-    rentPerDay,
     seats,
     status,
     transmission,
     year,
+    id,
   } = car;
 
   if (error?.graphQLErrors[0]?.extensions?.code === "NOT_FOUND") {
@@ -50,7 +52,7 @@ const DetailsPage = () => {
   }
 
   return (
-    <div className="container mx-auto mt-12 max-w-6xl px-4">
+    <div className="container mx-auto mt-24 max-w-6xl px-4">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Section - Car Images and Details */}
         <div className="w-full lg:w-3/4">
@@ -145,24 +147,9 @@ const DetailsPage = () => {
             </div>
           </div>
         </div>
-
         {/* Right Section - Booking or Additional Info */}
-        <div className="w-full lg:w-1/4">
-          <div className="bg-white p-6 rounded-lg shadow-lg sticky top-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Book This Car
-            </h2>
-            <p className="text-gray-600 mb-4">
-              Start from{" "}
-              <span className="text-2xl font-bold text-blue-500">
-                ${rentPerDay}
-              </span>{" "}
-              per day
-            </p>
-            <button className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">
-              Book Now
-            </button>
-          </div>
+        <div className="w-full lg:w-1/3">
+          <BookingForm carId={id} rentPerDay={rentPerDay} />
         </div>
       </div>
     </div>

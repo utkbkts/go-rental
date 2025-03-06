@@ -39,3 +39,16 @@ export const getUserName = (fullName: any) => {
     .join("");
   return nameSplice;
 };
+
+export const calculateRent = (daysRent: number, rentPerDay: number) => {
+  const rent = daysRent * rentPerDay;
+  const tax = rent * 0.15;
+  const discount = 0;
+  const total = rent + tax - discount;
+  return {
+    rent,
+    tax,
+    discount,
+    total,
+  };
+};
