@@ -15,11 +15,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { DateRangePicker } from "@/components/picker/DateRangePicker";
 import { Button } from "@/components/ui/button";
-import { useReactiveVar } from "@apollo/client";
+import { useMutation, useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/apolloVars";
 import { DateRange } from "react-day-picker";
 import { differenceInDays } from "date-fns";
-import { calculateRent } from "@/helpers/helpers";
+import { adjustDateLocalTimeZone, calculateRent } from "@/helpers/helpers";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { NEW_BOOKING_MUTATION } from "@/graphql/mutations/booking.mutation";
 
 type Props = {
   carId: string;
@@ -29,6 +32,18 @@ type Props = {
 
 const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
   const user = useReactiveVar(userVar);
+  const [totalPer, setTotalPer] = useState({
+    rent: 0,
+    tax: 0,
+    discount: 0,
+    total: 0,
+  });
+  const [selectedDates, setSelectedDates] = useState<DateRange | undefined>(
+    undefined
+  );
+  const navigate = useNavigate();
+  const [createBooking, { loading }] = useMutation(NEW_BOOKING_MUTATION);
+
   const form = useForm<createDetailSchema>({
     resolver: zodResolver(detailMenuSchema),
     defaultValues: {
@@ -43,6 +58,11 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
 
   const daysRent = form.watch("bookingDates");
 
+  useEffect(() => {
+    const { rent, tax, discount, total } = calculateRent(daysRent, rentPerDay);
+    setTotalPer({ rent, tax, discount, total });
+  }, [daysRent, rentPerDay]);
+
   const dateChangeHandler = (date: DateRange | undefined) => {
     if (!date?.from || !date?.to) {
       return;
@@ -53,12 +73,36 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
         date.to.setHours(0, 0, 0, 0),
         date.from.setHours(0, 0, 0, 0)
       ) + 1;
-
+    setSelectedDates(date);
     form.setValue("bookingDates", formattedBookingDates);
   };
+  const onSubmit = async (value: createDetailSchema) => {
+    const newBookingData = {
+      amount: {
+        total: totalPer.total,
+        discount: totalPer.discount,
+        rent: totalPer.rent,
+        tax: totalPer.tax,
+      },
+      customer: {
+        name: value.name,
+        email: value.email,
+        phoneNo: value.phoneNo,
+      },
+      daysOfRent: daysRent,
+      rentPerDay,
+      car: carId,
+      startDate: adjustDateLocalTimeZone(selectedDates?.from),
+      endDate: adjustDateLocalTimeZone(selectedDates?.to),
+      additionalNotes: value.additionalNotes,
+    };
 
-  const onSubmit = (data: createDetailSchema) => {
-    console.log(data);
+    const { data } = await createBooking({
+      variables: { bookingInput: newBookingData },
+    });
+    if (data?.createBooking?.id) {
+      navigate(`/booking/${data.createBooking.id}/payment_method`);
+    }
   };
 
   return (
@@ -90,6 +134,11 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
                 control={form.control}
                 onDateChange={dateChangeHandler}
               />
+              {form.formState.errors.bookingDates ? (
+                <span className="text-[0.8rem] font-medium text-destructive">
+                  {form.formState.errors.bookingDates.message}
+                </span>
+              ) : null}
               <EditInput
                 control={form.control}
                 name="additionalNotes"
@@ -118,25 +167,24 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
               </div>
               <div className="flex items-center justify-between">
                 <h1>Total Rent:</h1>
-                <span>
-                  ${calculateRent(daysRent, rentPerDay).rent.toFixed(2)}
-                </span>
+                <span>${totalPer.rent.toFixed(2)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <h1>Tax(15%):</h1>
-                <span>
-                  ${calculateRent(daysRent, rentPerDay).tax.toFixed(2)}
-                </span>
+                <span>${totalPer.tax.toFixed(2)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <h1 className="font-bold">Est. Total:</h1>
-                <span className="font-bold">
-                  ${calculateRent(daysRent, rentPerDay).total.toFixed(2)}
-                </span>
+                <span className="font-bold">${totalPer.total.toFixed(2)}</span>
               </div>
               <div>
-                {!user ? (
-                  <Button type="submit" className="w-full">
+                {user ? (
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={loading}
+                    loading={loading}
+                  >
                     Proceed
                   </Button>
                 ) : (

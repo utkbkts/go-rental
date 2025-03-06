@@ -12,7 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useSearchParams } from "react-router-dom";
-import { FormField } from "../ui/form";
+import { FormControl, FormField, FormItem } from "../ui/form";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   disabledDates?: any;
@@ -76,15 +76,19 @@ export function DateRangePicker({
             name={name}
             control={control}
             render={({ field }) => (
-              <Calendar
-                {...field}
-                initialFocus
-                mode="range"
-                selected={date}
-                onSelect={handleDateRange}
-                numberOfMonths={2}
-                disabled={disabledDates}
-              />
+              <FormItem>
+                <FormControl>
+                  <Calendar
+                    {...field}
+                    initialFocus
+                    mode="range"
+                    selected={date}
+                    onSelect={handleDateRange}
+                    numberOfMonths={2}
+                    disabled={disabledDates}
+                  />
+                </FormControl>
+              </FormItem>
             )}
           />
         </PopoverContent>

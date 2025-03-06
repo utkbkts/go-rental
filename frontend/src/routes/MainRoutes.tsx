@@ -3,6 +3,7 @@ import NotFound from "@/components/custom/NotFound";
 import MainLayout from "@/layouts/MainLayout";
 import React, { Suspense } from "react";
 import ProtectedRoute from "./ProtectedRoute";
+import PaymentMethod from "@/pages/payment/PaymentMethod";
 
 const HomePage = React.lazy(() => import("@/pages/home/HomePage"));
 const DetailsPage = React.lazy(() => import("@/pages/details/DetailsPage"));
@@ -35,6 +36,14 @@ export const MainRoutes = {
           <ProtectedRoute>
             <LoginPage />
           </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/booking/:id/payment_method",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <PaymentMethod />
         </Suspense>
       ),
     },

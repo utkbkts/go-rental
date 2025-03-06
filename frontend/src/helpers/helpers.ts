@@ -52,3 +52,13 @@ export const calculateRent = (daysRent: number, rentPerDay: number) => {
     total,
   };
 };
+
+export const adjustDateLocalTimeZone = (date: Date | undefined) => {
+  if (!date) return null;
+
+  const localDate = new Date(date);
+
+  localDate.setMinutes(date?.getMinutes() - date?.getTimezoneOffset());
+
+  return localDate;
+};

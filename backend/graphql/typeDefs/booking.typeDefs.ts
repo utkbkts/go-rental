@@ -39,6 +39,9 @@ export const bookingTypeDefs = gql`
   type Mutation {
     createBooking(bookingInput: BookingInput!): Booking!
   }
+  type Query {
+    getBookingById(bookingId: String!): Booking!
+  }
 
   input BookingAmountInput {
     tax: Float!

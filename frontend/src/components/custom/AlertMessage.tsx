@@ -9,7 +9,7 @@ type Props = {
 
 const AlertMessage = ({ title, description, color = "red" }: Props) => {
   return (
-    <div className="fixed top-4 righ-4 z-[999]">
+    <div className="">
       <Alert
         variant={"destructive"}
         className={color === "green" ? "text-green-800 border-green-800" : ""}
