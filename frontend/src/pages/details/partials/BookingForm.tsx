@@ -19,10 +19,16 @@ import { useMutation, useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/apolloVars";
 import { DateRange } from "react-day-picker";
 import { differenceInDays } from "date-fns";
-import { adjustDateLocalTimeZone, calculateRent } from "@/helpers/helpers";
+import {
+  adjustDateLocalTimeZone,
+  calculateRent,
+  formatDate,
+  getAllDatesBetween,
+} from "@/helpers/helpers";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NEW_BOOKING_MUTATION } from "@/graphql/mutations/booking.mutation";
+import AlertMessage from "@/components/custom/AlertMessage";
 
 type Props = {
   carId: string;
@@ -30,7 +36,7 @@ type Props = {
   disableDates?: [string];
 };
 
-const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
+const BookingForm = ({ carId, rentPerDay = 0, disableDates }: Props) => {
   const user = useReactiveVar(userVar);
   const [totalPer, setTotalPer] = useState({
     rent: 0,
@@ -41,6 +47,7 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
   const [selectedDates, setSelectedDates] = useState<DateRange | undefined>(
     undefined
   );
+  const [available, setAvailable] = useState<boolean>(false);
   const navigate = useNavigate();
   const [createBooking, { loading }] = useMutation(NEW_BOOKING_MUTATION);
 
@@ -58,6 +65,8 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
 
   const daysRent = form.watch("bookingDates");
 
+  const bookedDates = disableDates?.map(formatDate);
+
   useEffect(() => {
     const { rent, tax, discount, total } = calculateRent(daysRent, rentPerDay);
     setTotalPer({ rent, tax, discount, total });
@@ -68,6 +77,17 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
       return;
     }
 
+    const allDates = getAllDatesBetween(date.from, date.to);
+    const filteredDates = allDates.filter((element: any) =>
+      bookedDates?.includes(element)
+    );
+
+    if (filteredDates.length > 0) {
+      setAvailable(false);
+    } else {
+      setAvailable(true);
+    }
+
     const formattedBookingDates =
       differenceInDays(
         date.to.setHours(0, 0, 0, 0),
@@ -76,6 +96,7 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
     setSelectedDates(date);
     form.setValue("bookingDates", formattedBookingDates);
   };
+
   const onSubmit = async (value: createDetailSchema) => {
     const newBookingData = {
       amount: {
@@ -133,12 +154,19 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
                 name="bookingDates"
                 control={form.control}
                 onDateChange={dateChangeHandler}
+                disabledDates={disableDates}
               />
               {form.formState.errors.bookingDates ? (
                 <span className="text-[0.8rem] font-medium text-destructive">
                   {form.formState.errors.bookingDates.message}
                 </span>
               ) : null}
+              {available === false && (
+                <AlertMessage
+                  title="Not Available"
+                  description="Dates are not available for booking.Try again!"
+                />
+              )}
               <EditInput
                 control={form.control}
                 name="additionalNotes"
@@ -178,7 +206,7 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
                 <span className="font-bold">${totalPer.total.toFixed(2)}</span>
               </div>
               <div>
-                {user ? (
+                {user && available ? (
                   <Button
                     type="submit"
                     className="w-full"
@@ -188,8 +216,10 @@ const BookingForm = ({ carId, rentPerDay = 0, disabledDates }: Props) => {
                     Proceed
                   </Button>
                 ) : (
-                  <Button type="submit" disabled={true} className="w-full">
-                    Please login
+                  <Button type="submit" disabled className="w-full">
+                    {available || !user
+                      ? "Please login"
+                      : "Not available dates"}
                   </Button>
                 )}
               </div>

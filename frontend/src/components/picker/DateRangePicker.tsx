@@ -15,7 +15,7 @@ import { useSearchParams } from "react-router-dom";
 import { FormControl, FormField, FormItem } from "../ui/form";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  disabledDates?: any;
+  disabledDates?: [string];
   onDateChange: (date: DateRange | undefined) => void;
   name: string;
   control: any;
@@ -43,6 +43,10 @@ export function DateRangePicker({
       onDateChange(dates);
     }
   };
+
+  //parsed
+  const parsedDates =
+    disabledDates?.map((timestamp) => new Date(parseInt(timestamp))) || [];
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -85,7 +89,7 @@ export function DateRangePicker({
                     selected={date}
                     onSelect={handleDateRange}
                     numberOfMonths={2}
-                    disabled={disabledDates}
+                    disabled={[...parsedDates, { before: new Date() }]}
                   />
                 </FormControl>
               </FormItem>

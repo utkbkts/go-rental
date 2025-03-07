@@ -29,7 +29,7 @@ export const GET_ALL_QUERIES = gql`
 `;
 
 export const GET_CAR_BY_ID = gql`
-  query Query($carId: ID!) {
+  query Query($carId: ID!, $getCarBookedDatesCarId2: String!) {
     getCarById(carId: $carId) {
       id
       name
@@ -57,5 +57,6 @@ export const GET_CAR_BY_ID = gql`
         count
       }
     }
+    getCarBookedDates(carId: $getCarBookedDatesCarId2)
   }
 `;

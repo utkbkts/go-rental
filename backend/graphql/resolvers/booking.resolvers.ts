@@ -2,6 +2,7 @@ import { IUser } from "shared";
 import {
   createBooking,
   getBookingById,
+  getCarBookedDates,
   updateBooking,
 } from "../../controllers/booking.controller";
 import { BookingInput } from "../../types/booking.types";
@@ -13,6 +14,8 @@ export const bookingResolvers = {
       { bookingId }: { bookingId: string },
       { user }: { user: IUser }
     ) => getBookingById(bookingId, user),
+    getCarBookedDates: async (_: any, { carId }: { carId: string }) =>
+      getCarBookedDates(carId),
   },
   Mutation: {
     createBooking: async (

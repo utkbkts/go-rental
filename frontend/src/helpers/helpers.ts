@@ -1,4 +1,5 @@
 import { toast } from "@/hooks/use-toast";
+import { format } from "date-fns";
 
 export const updateSearchParams = (
   searchParams: URLSearchParams,
@@ -61,4 +62,22 @@ export const adjustDateLocalTimeZone = (date: Date | undefined) => {
   localDate.setMinutes(date?.getMinutes() - date?.getTimezoneOffset());
 
   return localDate;
+};
+export const formatDate = (date: Date | string) => {
+  if (typeof date === "string") {
+    date = new Date(parseInt(date));
+  }
+
+  return format(date, "yyyy-MM-dd");
+};
+
+export const getAllDatesBetween = (startDate: Date, endDate: Date) => {
+  const dates = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    dates.push(formatDate(new Date(currentDate)));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return dates;
 };

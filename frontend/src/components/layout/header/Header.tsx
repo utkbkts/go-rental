@@ -26,7 +26,6 @@ const Header = () => {
   });
 
   const currentUser = useReactiveVar(userVar);
-  console.log("🚀 ~ Header ~ currentUser:", currentUser);
 
   const [logout] = useLazyQuery(LOGOUT_USER, {
     onCompleted: () => {

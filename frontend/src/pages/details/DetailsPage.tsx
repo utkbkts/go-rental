@@ -14,6 +14,7 @@ const DetailsPage = () => {
   const { data, loading, error } = useQuery(GET_CAR_BY_ID, {
     variables: {
       carId: params?.id,
+      getCarBookedDatesCarId2: params?.id,
     },
   });
   const [active, setActive] = useState<number | null>(null);
@@ -22,6 +23,7 @@ const DetailsPage = () => {
     setActive(index);
   };
   const car: ICar = data?.getCarById;
+  const disabledDates = data?.getCarBookedDates;
 
   if (loading) {
     return <Loading />;
@@ -149,7 +151,11 @@ const DetailsPage = () => {
         </div>
         {/* Right Section - Booking or Additional Info */}
         <div className="w-full lg:w-1/3">
-          <BookingForm carId={id} rentPerDay={rentPerDay} />
+          <BookingForm
+            carId={id}
+            rentPerDay={rentPerDay}
+            disableDates={disabledDates}
+          />
         </div>
       </div>
     </div>

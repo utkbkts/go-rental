@@ -58,3 +58,25 @@ export const updateBooking = catchAsyncErrors(
     return true;
   }
 );
+
+export const getCarBookedDates = catchAsyncErrors(async (carId: string) => {
+  const bookings = await Booking.find({ car: carId });
+
+  const bookedDates = bookings.flatMap((booking) => {
+    const startDate = new Date(booking.startDate);
+    const endDate = new Date(booking.endDate);
+    const dates = [];
+
+    for (
+      let date = new Date(startDate);
+      date <= endDate;
+      date.setDate(date.getDate() + 1)
+    ) {
+      dates.push(new Date(date));
+    }
+
+    return dates;
+  });
+
+  return bookedDates;
+});
