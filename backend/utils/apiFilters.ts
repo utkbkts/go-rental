@@ -31,7 +31,6 @@ class APIFilters {
   filters(filters: any) {
     const filtersCopy = { ...filters };
 
-    console.log("🚀 ~ APIFilters ~ filters ~ filtersCopy:", filtersCopy);
     let filterStr = JSON.stringify(filtersCopy);
 
     filterStr = filterStr.replace(
@@ -49,6 +48,11 @@ class APIFilters {
 
     this.model = this.model.limit(resPerPage).skip(skip);
 
+    return this;
+  }
+
+  populate(field: string) {
+    this.model = this.model.populate(field);
     return this;
   }
 }

@@ -13,7 +13,10 @@ export const bookingTypeDefs = gql`
     tax: Float!
     total: Float!
   }
-
+  type Pagination {
+    totalCount: Int
+    resPerPage: Int
+  }
   type PaymentInfo {
     id: String!
     status: String!
@@ -36,6 +39,14 @@ export const bookingTypeDefs = gql`
     updatedAt: String!
   }
 
+  type CurrentUserBookings {
+    bookings: [Booking]
+    totalAmount: Float
+    totalBookings: Int
+    totalUnpaidBookings: Int
+    pagination: Pagination
+  }
+
   input UpdateBookingInput {
     paymentInfo: PaymentInfoInput
   }
@@ -50,6 +61,7 @@ export const bookingTypeDefs = gql`
   type Query {
     getBookingById(bookingId: String!): Booking!
     getCarBookedDates(carId: String!): [String]!
+    myBookings(page: Int, query: String): CurrentUserBookings
   }
 
   input BookingAmountInput {

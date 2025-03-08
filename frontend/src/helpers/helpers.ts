@@ -81,3 +81,20 @@ export const getAllDatesBetween = (startDate: Date, endDate: Date) => {
   }
   return dates;
 };
+
+export const calculateTablePaginationStart = (
+  currentPage: number,
+  resPerPage: number
+) => {
+  const start = (currentPage - 1) * resPerPage + 1;
+  return start;
+};
+
+export const calculateTablePaginationEnd = (
+  currentPage: number,
+  resPerPage: number,
+  totalCount: number
+) => {
+  const end = Math.min(currentPage * resPerPage, totalCount);
+  return end;
+};

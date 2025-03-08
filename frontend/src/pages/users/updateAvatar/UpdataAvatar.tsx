@@ -23,9 +23,8 @@ import { getUserName } from "@/helpers/helpers";
 import ImagesInput from "@/components/input/ImagesInput";
 import { useState } from "react";
 const UpdateAvatar = () => {
-  const [avatar,setAvatar]=useState<string | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(null);
   const user = useReactiveVar(userVar);
-  console.log("🚀 ~ UpdateAvatar ~ user:", user)
 
   const [updateAvatar, { loading }] = useMutation(UPDATE_AVATAR_MUTATION, {
     onCompleted: () => {
@@ -47,7 +46,7 @@ const UpdateAvatar = () => {
   const submitHandler = async () => {
     try {
       await updateAvatar({
-        variables: {avatar},
+        variables: { avatar },
       });
     } catch (error: any) {
       toast({

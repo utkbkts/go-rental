@@ -33,7 +33,6 @@ const RepairRight = () => {
   const start_year = searchParams.get("start_year")!;
   const finish_year = searchParams.get("finish_year")!;
   const brand = searchParams.get("brand")!;
- 
 
   //year
   const yearOptions = Array.from({ length: 21 }, (_, i) => {
@@ -51,7 +50,6 @@ const RepairRight = () => {
   };
 
   const { data, loading } = useQuery(GET_ALL_QUERIES, { variables });
-  console.log("🚀 ~ RepairRight ~ data:", data);
   const form = useForm<createFilteredSchema>({
     resolver: zodResolver(filteredMenuSchema),
     defaultValues: {
@@ -66,7 +64,6 @@ const RepairRight = () => {
   });
 
   const onSubmit = (data: createFilteredSchema) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
     const updatedSearchParams = new URLSearchParams(searchParams);
     Object.entries(data).forEach(([key, value]) => {
       if (value) {

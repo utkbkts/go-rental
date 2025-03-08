@@ -59,11 +59,11 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="fixed top-0 z-50 bg-black/50 w-full h-20 flex items-center justify-center">
+    <div className="fixed top-0 z-50 shadow w-full h-20 flex items-center justify-center drop-shadow-lg backdrop-blur-xl">
       <div className="flex items-center justify-between max-w-6xl w-full mx-auto">
         <Link to={"/"}>
           <h1
-            className={`transition-all duration-500 flex items-center gap-2 font-semibold text-gray-100 ${
+            className={`transition-all duration-500 flex items-center gap-2 font-semibold text-gray-800 ${
               scrollY ? "text-xl" : "text-4xl"
             }`}
           >
@@ -108,7 +108,9 @@ const Header = () => {
                   {currentUser?.role?.includes("admin") && (
                     <DropdownMenuItem>Dashboard</DropdownMenuItem>
                   )}
-                  <DropdownMenuItem>My Bookings</DropdownMenuItem>
+                  <Link to={"/me/bookings"}>
+                    <DropdownMenuItem>My bookings</DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={logoutHandler}>
                     Logout

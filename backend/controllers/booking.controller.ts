@@ -1,8 +1,9 @@
-import { IUser } from "shared";
+import { IBooking, IUser } from "shared";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 import Booking from "../models/booking.model";
 import { BookingInput } from "../types/booking.types";
 import { NotFoundError } from "../utils/errorHandler";
+import APIFilters from "../utils/apiFilters";
 
 export const createBooking = catchAsyncErrors(
   async (bookingInput: BookingInput, userId: string) => {
@@ -80,3 +81,43 @@ export const getCarBookedDates = catchAsyncErrors(async (carId: string) => {
 
   return bookedDates;
 });
+
+export const myBookings = catchAsyncErrors(
+  async (page: number, filters: any, query: string) => {
+    const resPerPage = 3;
+
+    const apiFilters = new APIFilters(Booking).filters(filters).populate("car");
+
+    let bookings = await apiFilters.model;
+
+    const totalAmount = bookings?.reduce(
+      (acc: number, booking: IBooking) => acc + booking.amount.total,
+      0
+    );
+
+    const totalBookings = bookings.length;
+    const totalUnpaidBookings = bookings.filter(
+      (booking: IBooking) => booking.paymentInfo.status !== "paid"
+    ).length;
+
+    apiFilters.search(query);
+
+    bookings = await apiFilters.model.clone();
+
+    let totalCount = bookings.length;
+
+    apiFilters.pagination(page, resPerPage);
+    bookings = await apiFilters.model.clone();
+
+    return {
+      bookings,
+      totalAmount,
+      totalBookings,
+      totalUnpaidBookings,
+      pagination: {
+        totalCount,
+        resPerPage,
+      },
+    };
+  }
+);

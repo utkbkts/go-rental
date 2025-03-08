@@ -63,7 +63,6 @@ const UserProfile = () => {
         variables: { userInput },
       });
     } catch (error: any) {
-      console.log("🚀 ~ submitHandler ~ error:", error)
       toast({
         title: "Something went wrong",
         description: error.message,

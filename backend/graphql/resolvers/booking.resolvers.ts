@@ -3,6 +3,7 @@ import {
   createBooking,
   getBookingById,
   getCarBookedDates,
+  myBookings,
   updateBooking,
 } from "../../controllers/booking.controller";
 import { BookingInput } from "../../types/booking.types";
@@ -16,6 +17,14 @@ export const bookingResolvers = {
     ) => getBookingById(bookingId, user),
     getCarBookedDates: async (_: any, { carId }: { carId: string }) =>
       getCarBookedDates(carId),
+    myBookings: async (
+      _: any,
+      { page, query }: { page: number; query: number },
+      { user }: { user: IUser }
+    ) => {
+      const filters = { user: user.id };
+      return myBookings(page, filters, query);
+    },
   },
   Mutation: {
     createBooking: async (
