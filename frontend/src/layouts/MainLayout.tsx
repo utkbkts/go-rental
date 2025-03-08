@@ -1,3 +1,4 @@
+import Footer from "@/components/layout/footer/Footer";
 import Header from "@/components/layout/header/Header";
 import { Outlet, useLocation } from "react-router-dom";
 
@@ -10,6 +11,7 @@ const MainLayout = () => {
       <div className="flex-grow">
         <Outlet />
       </div>
+      <Footer />
     </div>
   );
 };

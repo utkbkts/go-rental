@@ -68,6 +68,7 @@ export const carTypeDefs = gql`
     status: String
     rentPerDay: RentPerDayFilter
     year: YearFilter
+    milleage: YearFilter
   }
 
   type Pagination {

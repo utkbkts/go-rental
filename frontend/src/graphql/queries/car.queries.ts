@@ -9,7 +9,9 @@ export const GET_ALL_QUERIES = gql`
         fuelType
         name
         rentPerDay
+        brand
         transmission
+        milleage
         year
         images {
           public_id

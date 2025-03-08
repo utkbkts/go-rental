@@ -67,10 +67,23 @@ const MyBookings = () => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (query) {
+      setSearchQuery(query);
+    }
+  }, [query]);
+
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    navigate(`/me/bookings?query=${searchQuery}`);
+    const updatedSearchParams = new URLSearchParams(searchParams);
+    if (searchQuery) {
+      updatedSearchParams.set("query", searchQuery);
+    } else {
+      updatedSearchParams.delete("query");
+    }
+
+    navigate(`/me/bookings?${updatedSearchParams.toString()}`);
   };
 
   if (loading) {
@@ -145,7 +158,7 @@ const MyBookings = () => {
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
                       type="search"
-                      placeholder="Search..."
+                      placeholder="Enter booking ID"
                       className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}

@@ -18,7 +18,7 @@ const SliderTwo = ({ current, prevSlider, nextSlider }: Props) => {
       />
 
       {/* Title and Description */}
-      <div className="absolute  md:top-[40%] top-[10%] lg:-right-48 md:right-[30%] right-12  transform lg:-translate-x-1/2 lg:-translate-y-1/2 text-center text-white">
+      <div className="absolute top-[40%]  lg:-right-48 right-[30%]   transform lg:-translate-x-1/2 lg:-translate-y-1/2 text-center text-white">
         <div>
           <h2 className="mds:text-[48px]  text-xl font-light font-poppins bg-[#FFEAB3] text-[#6A4123]">
             {images[current].title}
@@ -27,7 +27,9 @@ const SliderTwo = ({ current, prevSlider, nextSlider }: Props) => {
             <span className="text-white">MOVE</span>
             <span className="text-[#FFEAB3]"> YOUR </span>
             <span className="text-[#6A4123] ">INVENTORY</span>
-            <span className="text-[#6A4123] text-[65px] italic font-light">Faster</span>
+            <span className="text-[#6A4123] text-[65px] italic font-light">
+              Faster
+            </span>
             <span className="bg-[#6A4123] w-[78%] h-[2px] absolute bottom-5 left-0"></span>
           </h4>
         </div>

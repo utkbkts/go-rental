@@ -17,6 +17,7 @@ import SliderTwo from "./slider/partials/SliderTwo";
 import SliderThree from "./slider/partials/SliderThree";
 import HeroSub from "./partials/heroSub/HeroSub";
 import SectionInformation from "./partials/sectionInformation/SectionInformation";
+import SectionAutlines from "./partials/sectionAutlines/SectionAutlines";
 
 const HomePage = () => {
   const [current, setCurrent] = useState(0);
@@ -101,14 +102,18 @@ const HomePage = () => {
       <div className="max-w-6xl mx-auto">
         <SectionRepair />
       </div>
+      {/* SECTION AUTLINES */}
+      <div className="max-w-6xl mx-auto min-h-screen">
+        <SectionAutlines />
+      </div>
       {/* SECTION CARD */}
-      <div className="container mx-auto min-h-screen ">
+      <div className="container mx-auto min-h-screen mb-44">
         <Title title="Car's" />
-        <div className="flex gap-4">
-          <div className="w-1/4">
+        <div className="flex md:flex-row flex-col gap-4 ">
+          <div className="md:w-1/4 w-full">
             <Sidebar />
           </div>
-          <div className="grid xl:grid-cols-2 grid-cols-1 gap-4">
+          <div className="grid xl:grid-cols-2 grid-cols-1 gap-4 w-full">
             {data?.getAllCars?.car?.map((cars: ICar) => (
               <FeaturesCards cars={cars} key={cars?.id} />
             ))}

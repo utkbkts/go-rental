@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Yellowtail&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 @import "tailwindcss";
 
@@ -70,14 +70,14 @@ body {
 }
 @theme {
   --font-cavet: "Caveat", "serif";
-  --font-yellow-tail:  "Yellowtail", cursive;
+  --font-yellow-tail: "Yellowtail", cursive;
   --font-poppins: "Open Sans", sans-serif;
-  --breakpoint-sm:640px;
-  --breakpoint-md:768px;
-  --breakpoint-mds:978px;
-  --breakpoint-lg:1024px;
-  --breakpoint-xl:1280px;
-  --breakpoint-2xl:1536px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-mds: 978px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
 }
 @theme inline {
   --color-background: var(--background);
@@ -116,5 +116,33 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+@layer utilities {
+  .clip-path-custom {
+    clip-path: polygon(0% 10%, 0 100%, 100% 100%, 100% 0, 28% 24%);
+    transition: all 0.5s ease-in-out;
+    height: 20vh;
+  }
+
+  .clip-path-custom:hover {
+    clip-path: polygon(31% 0, 100% 0, 100% 100%, 20% 80%, 0 100%, 0 0);
+    transform: translateY(-15vh);
+  }
+
+  .clip-path-image {
+    height: 20vh;
+    object-fit: cover;
+  }
+
+  .image-d:hover .clip-path-image {
+    clip-path: polygon(
+      31% 0,
+      100% 0,
+      100% 100%,
+      20% 80%,
+      0 100%,
+      0 0
+    ) !important;
   }
 }

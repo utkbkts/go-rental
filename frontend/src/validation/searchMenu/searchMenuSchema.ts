@@ -16,14 +16,14 @@ export const searchMenuSchema = z.object({
 
 export type createSearchSchema = z.infer<typeof searchMenuSchema>;
 
-
-
 export const filteredMenuSchema = z.object({
   start_year: requiredStringName.optional(),
   finish_year: requiredStringName.optional(),
+  min_mileage: requiredStringName.optional(),
+  max_mileage: requiredStringName.optional(),
   brand: z.array(requiredStringName).optional(),
   model: z.array(requiredStringName).optional(),
-  categories: z.array(requiredStringName).optional(),
+  category: z.array(requiredStringName).optional(),
   transmission: z.array(requiredStringName).optional(),
 });
 

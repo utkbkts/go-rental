@@ -34,7 +34,7 @@ const sectionData = [
 
 const SectionInformation = () => {
   return (
-    <div className="relative w-full h-[60vh] flex items-center justify-center">
+    <div className="relative w-full md:h-[60vh] h-screen flex items-center justify-center">
       {/* Background Image */}
       <div
         className="absolute inset-0 w-full h-full bg-fixed bg-center bg-cover"

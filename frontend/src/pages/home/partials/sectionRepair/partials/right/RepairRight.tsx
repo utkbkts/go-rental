@@ -1,4 +1,3 @@
-import { useState } from "react";
 import SelectInput from "@/components/input/SelectInput";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -18,21 +17,25 @@ import PopoverInput from "@/components/input/PopoverInput";
 import {
   CarBrand,
   CarCategories,
-  CarModels,
   CarTransmissions,
 } from "shared/src/interfaces";
+
 export interface SelectedValues {
   brand: string[];
-  model: string[];
-  categories: string[];
+  category: string[];
   transmission: string[];
 }
+
 const RepairRight = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const start_year = searchParams.get("start_year")!;
   const finish_year = searchParams.get("finish_year")!;
+  const min_mileage = searchParams.get("min_mileage")!;
+  const max_mileage = searchParams.get("max_mileage")!;
   const brand = searchParams.get("brand")!;
+  const category = searchParams.get("category")!;
+  const transmission = searchParams.get("transmission")!;
 
   //year
   const yearOptions = Array.from({ length: 21 }, (_, i) => {
@@ -41,8 +44,15 @@ const RepairRight = () => {
   });
 
   const filters = {
-    ...{ year: { gte: parseInt(start_year), lte: parseInt(finish_year) } },
+    ...(start_year && {
+      year: { gte: parseInt(start_year), lte: parseInt(finish_year) },
+    }),
+    ...(min_mileage && {
+      milleage: { gte: parseInt(min_mileage), lte: parseInt(max_mileage) },
+    }),
     ...(brand && { brand }),
+    ...(category && { category }),
+    ...(transmission && { transmission }),
   };
 
   const variables = {
@@ -55,27 +65,35 @@ const RepairRight = () => {
     defaultValues: {
       start_year: start_year || "",
       finish_year: finish_year || "",
+      min_mileage: min_mileage || "",
+      max_mileage: max_mileage || "",
       brand: [],
-      model: [],
-      categories: [],
+      category: [],
       transmission: [],
     },
     mode: "onChange",
   });
+  const milleageData = data?.getAllCars?.car;
+
+  //milleageOptions
+  const mileageOptions = Object.values(milleageData || {}).map((item: any) => ({
+    label: item?.milleage,
+    value: String(item?.milleage),
+  }));
 
   const onSubmit = (data: createFilteredSchema) => {
     const updatedSearchParams = new URLSearchParams(searchParams);
-    Object.entries(data).forEach(([key, value]) => {
+    Object.entries(data).forEach(([key, value]: any) => {
       if (value) {
         updatedSearchParams.set(key, value);
       } else {
         updatedSearchParams.delete(key);
       }
     });
-    // const newPathname = `${
-    //   window.location.pathname
-    // }?${updatedSearchParams.toString()}`;
-    // navigate(newPathname);
+    const newPathname = `${
+      window.location.pathname
+    }?${updatedSearchParams.toString()}`;
+    navigate(newPathname);
   };
   return (
     <div>
@@ -85,87 +103,92 @@ const RepairRight = () => {
       <br />
       <div className="bg-[#F0F0F0] w-full h-full">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-2"
-          >
-            <div className="flex flex-col p-4">
-              <div className="flex items-center gap-4 ">
-                <SelectInput
-                  control={form.control}
-                  name="start_year"
-                  label="Start Year"
-                  options={yearOptions}
-                  error={form.formState.errors.start_year}
-                />
-                <span className="mt-4">to</span>
-                <SelectInput
-                  control={form.control}
-                  name="finish_year"
-                  label="Finish Year"
-                  options={yearOptions}
-                  error={form.formState.errors.finish_year}
-                />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+            <div className="grid sm:grid-cols-2 grid-cols-1">
+              <div className="flex flex-col p-4">
+                <div className="flex items-center gap-4 ">
+                  <SelectInput
+                    control={form.control}
+                    name="start_year"
+                    label="Start Year"
+                    options={yearOptions}
+                    error={form.formState.errors.start_year}
+                  />
+                  <span className="mt-4">to</span>
+                  <SelectInput
+                    control={form.control}
+                    name="finish_year"
+                    label="Finish Year"
+                    options={yearOptions}
+                    error={form.formState.errors.finish_year}
+                  />
+                </div>
+                <div className="flex flex-col w-full">
+                  <PopoverInput
+                    label="Brand"
+                    products={CarBrand}
+                    name="brand"
+                    control={form.control}
+                    error={form.formState.errors.brand}
+                  />
+                </div>
+                <div className="flex flex-col w-full">
+                  <PopoverInput
+                    label="Category"
+                    products={CarCategories}
+                    name="category"
+                    control={form.control}
+                    error={form.formState.errors.category}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col w-full">
-                <PopoverInput
-                  label="Brand"
-                  products={CarBrand}
-                  name="brand"
-                  control={form.control}
-                  error={form.formState.errors.brand}
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <PopoverInput
-                  label="Model"
-                  products={CarModels}
-                  name="model"
-                  control={form.control}
-                  error={form.formState.errors.model}
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <PopoverInput
-                  label="Categories"
-                  products={CarCategories}
-                  name="categories"
-                  control={form.control}
-                  error={form.formState.errors.categories}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col p-4">
-              <div className="flex items-center gap-4 ">
-                <SelectInput
-                  control={form.control}
-                  name="min_mileage"
-                  label="Min Mileage"
-                  options={yearOptions}
-                  error={form.formState.errors.start_year}
-                />
-                <span className="mt-4">to</span>
-                <SelectInput
-                  control={form.control}
-                  name="max_mileage"
-                  label="Max Mileage"
-                  options={yearOptions}
-                  error={form.formState.errors.finish_year}
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <PopoverInput
-                  label="Transmission"
-                  products={CarTransmissions}
-                  name="transmission"
-                  control={form.control}
-                  error={form.formState.errors.transmission}
-                />
+              <div className="flex flex-col p-4">
+                <div className="flex items-center gap-4 ">
+                  <SelectInput
+                    control={form.control}
+                    name="min_mileage"
+                    label="Min Mileage"
+                    options={mileageOptions}
+                    error={form.formState.errors.min_mileage}
+                  />
+                  <span className="mt-4">to</span>
+                  <SelectInput
+                    control={form.control}
+                    name="max_mileage"
+                    label="Max Mileage"
+                    options={mileageOptions}
+                    error={form.formState.errors.max_mileage}
+                  />
+                </div>
+                <div className="mt-1">
+                  <PopoverInput
+                    label="Transmission"
+                    products={CarTransmissions}
+                    name="transmission"
+                    control={form.control}
+                    error={form.formState.errors.transmission}
+                  />
+                </div>
               </div>
             </div>
-            <Button loading={loading} disabled={loading} type="submit">
-              Submit
-            </Button>
+            <div className="p-2 flex items-center justify-end w-full gap-4">
+              <Button
+                loading={loading}
+                disabled={loading}
+                type="button"
+                variant={"destructive"}
+              >
+                Reset
+              </Button>
+              <Button
+                loading={loading}
+                disabled={loading}
+                type="submit"
+                variant={"destructive"}
+              >
+                Find My New Vehicle
+              </Button>
+            </div>
           </form>
         </Form>
       </div>

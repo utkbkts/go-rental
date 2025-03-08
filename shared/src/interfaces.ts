@@ -21,7 +21,7 @@ export const CarSeats = [2, 4, 5, 7, 8, 9, 10];
 export const CarModels = [
   "A4",
   "X5",
-  "Mustang",
+  "SUV",
   "Civic",
   "Elantra",
   "Altima",
