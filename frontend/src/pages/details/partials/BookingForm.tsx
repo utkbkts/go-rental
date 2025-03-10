@@ -121,6 +121,7 @@ const BookingForm = ({ carId, rentPerDay = 0, disableDates }: Props) => {
     const { data } = await createBooking({
       variables: { bookingInput: newBookingData },
     });
+
     if (data?.createBooking?.id) {
       navigate(`/booking/${data.createBooking.id}/payment_method`);
     }
