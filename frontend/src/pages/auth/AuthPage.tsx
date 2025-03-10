@@ -7,11 +7,11 @@ const LoginPage = () => {
   return (
     <div className="w-full h-screen overflow-hidden">
       <div className="flex h-full">
-        <div className="w-1/3 relative">
+        <div className="2xl:w-1/3 xl:w-1/2 w-full relative">
           <LeftSection />
           <AuthModal />
         </div>
-        <div className="w-full relative bg-amber-200">
+        <div className="w-full relative bg-amber-200 md:block hidden">
           <RightSection />
         </div>
       </div>

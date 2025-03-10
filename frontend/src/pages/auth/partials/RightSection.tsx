@@ -16,7 +16,7 @@ const RightSection = () => {
         src={greenCar}
         alt="green-car"
         title="green_car"
-        className="object-cover absolute left-1/2"
+        className="object-cover absolute 2xl:top-1/7 top-1/3 left-1/2"
       />
     </>
   );

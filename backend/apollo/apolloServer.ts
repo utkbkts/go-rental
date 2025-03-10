@@ -15,6 +15,7 @@ import { bookingTypeDefs } from "../graphql/typeDefs/booking.typeDefs";
 import { bookingResolvers } from "../graphql/resolvers/booking.resolvers";
 import { paymentTypeDefs } from "../graphql/typeDefs/payment.typeDefs";
 import { paymentResolvers } from "../graphql/resolvers/payment.resolvers";
+import { webhookHandler } from "../controllers/payment.controller";
 
 interface CustomJWTPayload {
   _id: string;
@@ -43,6 +44,10 @@ export async function startApolloServer(app: Application) {
 
   const apolloServer = new ApolloServer({
     schema: schemaWithMiddleware,
+    formatError: (err) => {
+      console.error("🔥 GraphQL Error:", err);
+      return err;
+    },
   });
 
   await apolloServer.start();
@@ -77,4 +82,16 @@ export async function startApolloServer(app: Application) {
       },
     })
   );
+
+  app.post("/api/payment/webhook", async (req: Request, res: Response) => {
+    const signature = req.headers["stripe-signature"];
+    const rawBody = req.rawBody;
+    const success = await webhookHandler(signature, rawBody);
+
+    if (success) {
+      res.status(200).json({ success: true });
+    } else {
+      res.status(400).json({ success: false });
+    }
+  });
 }

@@ -4,14 +4,14 @@ import { Outlet, useLocation } from "react-router-dom";
 
 const MainLayout = () => {
   const pathname = useLocation().pathname;
-  const startRoute = pathname.startsWith("/login");
+  const startRoute = pathname.startsWith("/auth");
   return (
     <div className="flex flex-col min-h-screen w-full">
       {!startRoute && <Header />}
       <div className="flex-grow">
         <Outlet />
       </div>
-      <Footer />
+      {!startRoute && <Footer />}
     </div>
   );
 };

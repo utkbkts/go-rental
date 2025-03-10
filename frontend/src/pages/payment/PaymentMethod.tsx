@@ -14,15 +14,17 @@ import { Label } from "@/components/ui/label";
 import AlertMessage from "@/components/custom/AlertMessage";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_BOOKING_BY_ID } from "@/graphql/queries/booking.queries";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "@/components/custom/Loading";
 import NotFound from "@/components/custom/NotFound";
 import { useEffect, useState } from "react";
 import { UPDATE_BOOKING_MUTATION } from "@/graphql/mutations/booking.mutation";
 import { toast } from "@/hooks/use-toast";
+import { STRIPE_CHECKOUT_SESSION_MUTATION } from "@/graphql/mutations/payment.mutation";
 
 const PaymentMethod = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const {
     data,
@@ -43,14 +45,34 @@ const PaymentMethod = () => {
     },
   });
 
+  //payment_method
+  const [
+    stripeCheckoutSession,
+    { loading: checkoutLoading, error: checkoutError },
+  ] = useMutation(STRIPE_CHECKOUT_SESSION_MUTATION, {
+    onCompleted: (data) => {
+      if (data?.stripeCheckoutSession?.url) {
+        navigate(data?.stripeCheckoutSession?.url);
+        window.location.href = data?.stripeCheckoutSession?.url;
+      }
+    },
+  });
+
   useEffect(() => {
     if (bookingError) {
       toast({
         title: `${bookingError}`,
-        variant: "success",
+        variant: "destructive",
       });
     }
-  }, [bookingError]);
+
+    if (checkoutError) {
+      toast({
+        title: `${checkoutError}`,
+        variant: "destructive",
+      });
+    }
+  }, [bookingError, checkoutError]);
 
   const handleBookingUpdate = async () => {
     if (paymentMethod === "cash") {
@@ -64,13 +86,8 @@ const PaymentMethod = () => {
       });
     }
     if (paymentMethod === "card") {
-      const bookingInput = {
-        paymentInfo: {
-          method: "card",
-        },
-      };
-      await updateBooking({
-        variables: { bookingId: params?.id, bookingInput },
+      await stripeCheckoutSession({
+        variables: { bookingId: params?.id },
       });
     }
   };
@@ -193,7 +210,11 @@ const PaymentMethod = () => {
             )}
           </CardContent>
           <CardFooter>
-            <Button onClick={handleBookingUpdate} className="w-full">
+            <Button
+              onClick={handleBookingUpdate}
+              className="w-full"
+              disabled={checkoutLoading}
+            >
               <CreditCard className="mr-2 h-4 w-4" />{" "}
               {paymentMethod === "card" ? "Pay with Card" : "Pay Cash"}
             </Button>

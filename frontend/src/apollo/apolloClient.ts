@@ -1,6 +1,22 @@
 //utility yardımcı fonksiyon
 
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import {onError} from "@apollo/client/link/error"
+
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      console.error(
+        `[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      );
+    });
+  }
+  if (networkError) {
+    console.error(`[Network Error]: ${networkError}`);
+  }
+});
+
 
 const httpLink = new HttpLink({
   uri: import.meta.env.VITE_REACT_APP_BASE_URL,
@@ -8,7 +24,7 @@ const httpLink = new HttpLink({
 });
 
 const client = new ApolloClient({
-  link: httpLink,
+  link: errorLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
